@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+    {% block body %}
+<main>
+        <section class="hero">
+            <h1>Welcome to Questify</h1>
+            <p>Your platform for asking and answering questions.</p>
+        </section>
+{% comment %} {% for question in lastest_questions  %} {% endcomment %}
+        <section class="latest-questions">
+            <h2>Latest Questions</h2>
+            <h4>{{lastest_questions.title}}</h4>
+            <p>{{lastest_questions.content}}</p>
+            <!-- Latest questions content here -->
+        </section>
+        {% comment %} {% endfor %} {% endcomment %}
+</main>
+    {% endblock body %}
+    

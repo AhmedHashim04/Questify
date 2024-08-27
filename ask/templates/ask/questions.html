@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    <main>
+        <section class="search">
+            <h2>Search Questions</h2>
+            <form action="#" method="get">
+                <input type="text" id="search" name="search" placeholder="Search for questions..." required>
+                <button type="submit">Search</button>
+            </form>
+        </section>
+        <h2>All Questions</h2>
+        {% for question in questions  %}
+        <section class="questions-list">
+            <!-- List of questions here -->
+
+                <div class="question-item">
+                    <div class="question-box">
+                        <h3 class="question-title">{{question.title}}</h3>
+                        <p class="question-user">@{{question.user}}</p>
+                        <p class="question-description">{{question.content}}</p>
+                        <p class="question-meta">{{question.created_at}}</p>
+                        {% if question.rating == 1 %}
+                        <p class="question-meta">Rating : ♦</p>
+                        {% elif question.rating == 2 %}
+                        <p class="question-meta">Rating : ♦ ♦ </p>
+                        {% elif question.rating == 3 %}
+                        <p class="question-meta">Rating : ♦ ♦ ♦</p>
+                        {% elif question.rating == 4 %}
+                        <p class="question-meta">Rating : ♦ ♦ ♦ ♦ </p>
+                        {% elif question.rating == 5 %}
+                        <p class="question-meta">Rating : ♦ ♦ ♦ ♦ ♦</p>  
+                        {% endif %}
+                        <p class="question-stats"> 
+                            <span class="likes">Likes: 150</span> | 
+                            <span class="views">Views: 500</span>
+                        </p>
+                        <a href="{% url 'ask:question_detail' question.id %}" class="btn details-btn">View Details</a>
+                    </div>
+                </div>
+            </section>
+            {% endfor %}
+    </main>
+
+    {% endblock body %}
+    

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <main>
+        <section class="question-detail">
+            <div class="question-box">
+                <h2 class="question-title">{{question.title}}</h2>
+                <p class="question-description">{{question.content}}</p>
+                <p class="question-meta">@{{question.user}}</p>
+                <p class="question-meta">{{question.created_at}}</p>
+                <p class="question-meta">Rating 4/8</p>
+                <div class="question-meta">
+                    <span class="likes">Likes: 150</span> | 
+                    <span class="views">Views: 500</span> |
+                </div>
+                
+                <section class="rating">
+                    <h3>Rate this Question:</h3>
+                    <form action="#" method="post">
+                        <label for="rating">Rating:</label>
+                        <select id="rating" name="rating">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <button type="submit">Submit Rating</button>
+                    </form>
+                    <section class="social-share">
+                        <h3>Share this Question:</h3>
+                            <a class="Facebook" href="https://www.facebook.com/sharer/sharer.php?u=URL" target="_blank">Facebook</a>
+                            <a class="Twitter" href="https://twitter.com/intent/tweet?url=URL" target="_blank">Twitter</a>
+                            <a class="LinkedIn" href="https://www.linkedin.com/shareArticle?url=URL" target="_blank">LinkedIn</a>
+                    </section>
+                </section>
+
+                
+                
+            </div>
+        </section>
+        <section class="question-detail">
+            <section class="answers">
+                <form action="#" method="post">
+                    <label for="answer">Add Your Answer:</label>
+                    <textarea id="answer" name="answer" rows="4" required></textarea>
+                    <button type="submit">Submit Answer</button>
+                </form>
+                <h3>Answers:</h3>
+                <!-- List of answers here -->
+                <div class="answer-item">
+                    <p class="answer-content">This is an answer to the question...</p>
+                    <p class="answer-meta">Answered by User2 on Date</p>
+                </div>
+            </section>
+        </section>
+
+    </main>
+    {% endblock body %}
