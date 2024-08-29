@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+ 
+
+{% block body %}
+
+<main>
+    <section class="user-questions">
+        <h2>Newest Groups</h2>
+        <ul>
+            <li>
+                <span>group Title 1</span>
+                <a href="group_detail.html?id=1" class="btn-detail">View Details</a>
+            </li>
+            <li>
+                <span>group Title 2</span>
+                <a href="group_detail.html?id=2" class="btn-detail">View Details</a>
+            </li>
+            <li>
+                <span>group Title 3</span>
+                <a href="group_detail.html?id=3" class="btn-detail">View Details</a>
+            </li>
+            <li>
+                <span>group Title 4</span>
+                <a href="group_detail.html?id=4" class="btn-detail">View Details</a>
+            </li>
+            <!-- Add more questions as needed -->
+        </ul>
+    </section>
+</main>
+
+{% endblock body %}
+

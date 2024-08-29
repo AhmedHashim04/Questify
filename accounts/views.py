@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate , login
 from .form import SignUpForm ,ProfileForm ,UserForm
 from .models import Profile 
-from ask.models import  Question
+from ask.models import  Question ,Answer
 from django.contrib.auth.decorators import login_required 
 from django.shortcuts import get_object_or_404
 
@@ -27,10 +27,10 @@ def signup(request):
     
 @login_required
 def profile(request,slug):
-    profile = get_object_or_404(Profile,slug=slug)
-    myposts = Question.objects.filter(user=request.user)
-    # print(myposts)
-    return render(request,"registration/profile.html",{"profile":profile,'myposts':myposts})
+    profile   = get_object_or_404(Profile,slug=slug)
+    myposts   = Question.objects.filter(user=request.user).all()[0:3]
+    myanswers = Answer.objects.filter(user=request.user).all()[0:3]
+    return render(request,"registration/profile.html",{"profile":profile,'myposts':myposts,'myanswers':myanswers})
     # return render(request,"registration/profile.html",{"profile":profile},{'myposts':myposts})
 
 
@@ -42,11 +42,14 @@ def editprofile(request,slug):
         user_form = UserForm(request.POST,instance=request.user)
         if user_form.is_valid() and profile_form.is_valid() :
             user_form.save()
-            profile_form.user = request.user
-            profile_form.save()
+            myprofile_form = profile_form.save(commit=False)
+            myprofile_form.user = request.user
+            myprofile_form.save()
 
-            return redirect(reverse('accounts:profile'))
+            return redirect(('accounts:profile'),slug=profile.slug)
+
     else:
+
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=profile)
 

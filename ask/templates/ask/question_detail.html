@@ -41,17 +41,23 @@
         </section>
         <section class="question-detail">
             <section class="answers">
-                <form action="#" method="post">
+
+                <form method="post">
+                    {% csrf_token %}
                     <label for="answer">Add Your Answer:</label>
-                    <textarea id="answer" name="answer" rows="4" required></textarea>
-                    <button type="submit">Submit Answer</button>
+                    {{ form.as_p }}
+                    <button type="submit">Submit</button>
                 </form>
+
                 <h3>Answers:</h3>
                 <!-- List of answers here -->
-                <div class="answer-item">
-                    <p class="answer-content">This is an answer to the question...</p>
-                    <p class="answer-meta">Answered by User2 on Date</p>
-                </div>
+                 {% for answer in answers %}
+                    <div class="answer-item">
+                        <p class="answer-content">{{answer}}</p>
+                        <p class="question-meta">@{{answer.user}}</p>
+                        <p class="question-meta">{{answer.created_at}}</p>
+                    </div>
+                {% endfor %}
             </section>
         </section>
 

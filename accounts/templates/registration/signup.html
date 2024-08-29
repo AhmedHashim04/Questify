@@ -3,16 +3,38 @@
 
 {% block body %}
 
+{% if user.is_authenticated %}
+
+<main>
+    <section class="hero">
+        <h1>Welcome to Questify</h1>
+        <p>Your platform for asking and answering questions.</p>
+    </section>
+{% comment %} {% for question in lastest_questions  %} {% endcomment %}
+    <section class="latest-questions">
+        <h2>Latest Questions</h2>
+        <h4>{{lastest_questions.title}}</h4>
+        <p>{{lastest_questions.content}}</p>
+        <!-- Latest questions content here -->
+    </section>
+    {% comment %} {% endfor %} {% endcomment %}
+</main>
+
+{% else %}
+
+<main>
 <form  method="post">
-    <main>
         <section class="register">
             <h2>Register</h2>
-            <form action="#" method="post">
-            {% csrf_token %}
+            <form method="post">
+                {% csrf_token %}
                 {{form}}
-            <input class="btn details-btn" type="submit" value="Register">
-        </section>
+                <input class="btn details-btn" type="submit" value="Register">
+            </section>
+        </form>
     </main>
-</form>
+{% endif %}
+
+
 
 {% endblock body %}

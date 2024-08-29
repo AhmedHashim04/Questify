@@ -11,7 +11,7 @@
 <body>
     <header>
 
-        <a href="index.html" target="_blank" class="logo">Questify</a>
+        <a href="/home" target="_blank" class="logo">Questify</a>
 
         <nav>
             <a href="/home">Home</a>
@@ -21,9 +21,13 @@
             <div class="account-menu">
                 <a href=".." class="account-button">Account</a>
                 <div class="account-dropdown">
-                    <a href="{% url "accounts:profile" %}">Profile</a>
+                    {% if request.user.is_authenticated  %}
+                    <a href={% url "accounts:logout" %} >Log out</a>
+                    <a href="{% url "accounts:profile" request.user.username %}">{{request.user.username}}</a>
+                    {% else %}
                     <a href="/accounts/login/">Login</a>
-                    <a href="/accounts/signup">Signup</a>
+                    <a href="/accounts/signup">Sign up</a>
+                    {% endif %}
                 </div>
             </div>
         </nav>
@@ -37,9 +41,9 @@
             <div class="footer-links">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="questions.html">Questions</a></li>
-                    <li><a href="ask_question.html">Ask Question</a></li>
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/ask/questions">Questions</a></li>
+                    <li><a href="/ask/">Ask Question</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="privacy_policy.html">Privacy Policy</a></li>
                     <li><a href="terms_of_service.html">Terms of Service</a></li>

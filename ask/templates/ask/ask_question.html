@@ -6,6 +6,7 @@
         <section class="ask-question">
             <h2>Ask a Question</h2>
             <form action="#" method="post">
+                {% csrf_token %}
                 {{form}}
                 <button type="submit">Submit Question</button>
             </form>

@@ -14,80 +14,55 @@
 
 
 
-  <section class="profile">
-      <div class="profile-container">
-          <div class="profile-header">
-              <img src="user-avatar.png" alt="User Avatar" class="profile-avatar">
-              <h2>User Profile</h2>
-              <a href="profile_edit.html" class="btn-edit-profile">Edit Profile</a>
-          </div>
-          <div class="profile-info">
+
+        <section class="profile">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <img src="{{profile.image}}" alt="User Avatar" class="profile-avatar">
+                    <h2>{{profile.user}}</h2>
+                    <a href="{% url 'accounts:profile_edit' profile.slug %}" class="btn-edit-profile">Edit Profile</a>
+                </div> 
+                
+                <div class="profile-info">
               <h3>Profile Information</h3>
-              <p><strong>Username:</strong> JohnDoe</p>
-              <p><strong>Email:</strong> johndoe@example.com</p>
-              <p><strong>Joined:</strong> January 1, 2024</p>
-          </div>
+              <p><strong>Bio:</strong> {{profile.bio}}</p>
+              <p><strong>Email:</strong> {{profile.user.email}}</p>
+              <p><strong>Phone:</strong> {{profile.tel}}</p>
+              <p><strong>Joined:</strong> Joined</p>
+              <p><strong>Birth Day :</strong> {{profile.birth_day}}</p>
+            </div>
+        </section>
+          
+          
+          
+          <h3 class= "quest_last">Your Last 3 Questions :</h3>
+          {% for mypost in myposts %}
+          
           <div class="user-questions">
-              <h3>Questions Asked</h3>
               <ul id="questions-list">
-                  <!-- Questions will be inserted here dynamically -->
-              </ul>
-              <a href="user_questions.html" class="btn-action">My Questions</a>
-          </div>
-          <div class="user-answers">
-              <h3>Questions Answered</h3>
-              <ul id="answers-list">
-                  <!-- Answers will be inserted here dynamically -->
-              </ul>
-              <a href="user_answers.html" class="btn-action">My Answers</a>
-          </div>
-      </div>
-  </section>
+                <h4> {{mypost.title}}</h3>
+                <h6>{{mypost.content}}</h3>
+                <h6> {{mypost.created_at}}</h3>
+                    </ul>
+                {% comment %} <a href='{{ mypost.get_absolute_url }}' class="btn-action">View Detail</a> {% endcomment %}
+                <a href="{% url 'ask:question_detail' mypost.id %}" class="btn details-btn">View Details</a>
+                
+            </div>
+            {% endfor %}
+            <hr>
+            
+            <h3 class= "quest_last">Your Last 3 Answers :</h3>
+            {% for myanswer in myanswers %}
+            <div class="user-answers">
+                <ul id="answers-list">
+                    <h4>{{myanswer.content}}</h3>
+                    <h6> {{myanswer.created_at}}</h3>
+                    <a href="{% url 'ask:question_detail' myanswer.question.id %}" class="btn-action">View Question</a>
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+  
 </main>
 
-    <h1>Account's Info</h1>
-
-    <form method="post">
-      {% csrf_token %}
-      ☼  {{profile.birth_day}}
-        <hr>
-        Email: {{profile.bio}}
-        <hr>
-        Phone: {{profile.tel}}
-        <hr>
-        Country: {{profile.image}}
-        <hr>
-        Posts: {{myposts}}
-        <hr>
-    </form>
-
-
-tel
-
-
-    <div>
-      <p><a class="boxed-btn3 w-100" href="{% url 'accounts:profile_edit' profile.slug %}" >►Edit Profile?</a></p>
-    </div>
     {% endblock body %}
-
-  {% comment %} <h1>Account,s Info </h1>
-
-  <form method="post" >
-      {% csrf_token %}
-        ☼  {{profile.image}}
-        <hr>
-        ☼ Email : {{profile.user.email}}
-        <hr>
-        ☼ Phone : {{profile.tel}}
-        <hr>
-        ☼ Country : {{profile.city}}
-        <hr>
-        ☼ Posts : {{myposts}}
-        <hr>
-    </form>
-    
-    <div>
-      <p><a class="boxed-btn3 w-100" href="{% url 'accounts:profile_edit' profile.slug %}" >►Edit Profile?</a></p>
-    </div>
- {% endcomment %}
-        {% comment %} {{profile}} {% endcomment %}

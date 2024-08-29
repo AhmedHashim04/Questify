@@ -1,28 +1,43 @@
-from django.shortcuts import render , redirect
-from .models import Question , Answer
-from .form import AskForm
+from django.shortcuts import render , redirect ,get_object_or_404
+from .models import Question , Answer 
+from django.urls import reverse
+from .form import AskForm , AnswerForm
+from django.contrib.auth.decorators import login_required
+
  
 def question_list(request):
     questions = Question.objects.all()
-    for question in questions:
-        print (question.content)
     
     return render(request,'ask/questions.html',{'questions':questions})
 
-def question_detail(request,id):
-    question = Question.objects.get(id=id)
-    return render(request,'ask/question_detail.html',{'question':question})
 
+@login_required
+def question_detail(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+    answers = Answer.objects.filter(question=question)
+    
+    if request.method == 'POST':
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.user = request.user
+            answer.question = question
+            answer.save()
+            return redirect('ask:question_detail', pk=question.pk)
+    else:
+        form = AnswerForm()
+
+    return render(request, 'ask/question_detail.html', {'question': question,'answers': answers,'form': form})
 
 def ask(request):
     if request.method == 'POST':
-        form = AskForm()
+        form = AskForm(request.POST)
         if form.is_valid() :
-            form = AskForm(request.POST)
-            form.user = request.user
-            form.save()
+            myform = form.save(commit=False)
+            myform.user = request.user
+            myform.save()
 
-            return redirect("/questions/")
+            return redirect(reverse('ask:question_list'))
     else:
         form = AskForm()
 

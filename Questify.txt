@@ -1,1 +1,43 @@
-Home 
+Home : 
+	Last Questions in my groups
+	Some info about web
+
+About : 
+	About and Contact
+
+Sign up :
+
+Login :
+
+Profile :
+
+	info About the User 
+	his lastest Questions and Lastest Answers{activity history}
+	and User Groups and User Friends
+
+
+Edit Profile :
+	Edit User Info
+	Can go to change password 
+
+
+Questions : 
+	Last questions in the Web
+
+question detail :
+	detail about question : likes , Vews ,Answers ,rate
+
+ask Question : add Question
+
+Massages :
+	can send a text massages and recieve it 
+	can choose friend to chat with it
+
+Groups :
+
+	can go to Groub to ask about any thing
+
+Frindes : 
+	can add and delete friend
+
+	
