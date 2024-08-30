@@ -4,22 +4,37 @@
     <main>
         <section class="question-detail">
             <div class="question-box">
+                
                 <h2 class="question-title">{{question.title}}</h2>
                 <p class="question-description">{{question.content}}</p>
                 <p class="question-meta">@{{question.user}}</p>
                 <p class="question-meta">{{question.created_at}}</p>
-                <p class="question-meta">Rating 4/8</p>
+                {% comment %} <p class="question-meta">Rating 4/8</p> {% endcomment %}
                 <div class="question-meta">
                     <span class="likes">Likes: 150</span> | 
                     <span class="views">Views: 500</span> |
                 </div>
+                {% if request.user == question.user %}
+                <div class="question-meta">
+                    <a href="{% url 'ask:edit_question' question.id %}" style="display:inline;">Edit Question</a>
+                    <a onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا السؤال؟');" href="{% url 'ask:delete_question' question.id %}" class="modify_quest" >Delete Question</a>
+                </div>
+                {% endif %}
+
+                <div class="question-meta">
+                    {% if request.user in question.like.all %}
+                    <a href="{% url "ask:question_like" question.id %}"> DisLike</a>
+                    {% else %}
+                    <a href="{% url "ask:question_like" question.id %}">Like </a>
+                    {% endif %}
+                </div>
                 
+                {% comment %} <div class="question-meta">
                 <section class="rating">
-                    <h3>Rate this Question:</h3>
                     <form action="#" method="post">
-                        <label for="rating">Rating:</label>
+                        <label for="rating" style="display:inline;" >Rating:</label>
                         <select id="rating" name="rating">
-                            <option value="1">1</option>
+                            <option value="1" >1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
@@ -27,17 +42,18 @@
                         </select>
                         <button type="submit">Submit Rating</button>
                     </form>
-                    <section class="social-share">
-                        <h3>Share this Question:</h3>
-                            <a class="Facebook" href="https://www.facebook.com/sharer/sharer.php?u=URL" target="_blank">Facebook</a>
-                            <a class="Twitter" href="https://twitter.com/intent/tweet?url=URL" target="_blank">Twitter</a>
-                            <a class="LinkedIn" href="https://www.linkedin.com/shareArticle?url=URL" target="_blank">LinkedIn</a>
-                    </section>
+                </div> {% endcomment %}
                 </section>
 
                 
                 
             </div>
+        </section>
+        <section class="social-share">
+            <h3 style="display:inline;" >Share this Question:</h3>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=URL" target="_blank">Facebook</a>
+            <a  href="https://twitter.com/intent/tweet?url=URL" target="_blank">Twitter</a>
+            <a  href="https://www.linkedin.com/shareArticle?url=URL" target="_blank">LinkedIn</a>
         </section>
         <section class="question-detail">
             <section class="answers">

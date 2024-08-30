@@ -634,4 +634,17 @@ section.social-share a.Facebook , a.Twitter , a.LinkedIn {
     
 }
 
+.modify_quest {
+    background-color: #ffb400;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 100px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    height: 2px;
+    
+}
+
 
