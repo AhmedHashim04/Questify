@@ -14,8 +14,8 @@
                 <p class="question-meta">{{question.created_at}}</p>
                 {% comment %} <p class="question-meta">Rating 4/8</p> {% endcomment %}
                 <div class="question-meta">
-                    <span class="likes">Likes: 150</span> | 
-                    <span class="views">Views: 500</span> |
+                    <span class="likes">Likes: {{question.like.count}}</span> 
+                    {% comment %} <span class="views">Views: 500</span>  {% endcomment %}
                 </div>
                 {% if request.user == question.user %}
                 <div class="question-meta">

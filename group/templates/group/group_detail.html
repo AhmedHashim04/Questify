@@ -23,17 +23,12 @@
                 <p class="question-meta">Leader : @{{group.leader}}</p>
                 <p class="question-meta">Created at : {{group.created_at}}</p>
                 <div class="question-meta">
-                    <span class="views">Joined: 500</span> 
+                    <span class="views">Joined: {{group.members.all.count}}</span> 
                 </div>
 
 
 
-                {% if request.user == question.leader %}
-                <div class="question-meta">
-                    <a href="{% url 'ask:edit_question' question.id %}"class="modify_quest">Edit Group Info</a>
-                    {% comment %} <a onclick="return confirm('هل أنت متأكد أنك تريد حذف هذة المجموعة');" href="{% url 'ask:delete_question' question.id %}" class="modify_quest" >Delete Question</a> {% endcomment %}
-                </div>
-                {% endif %}
+
                
 
                 {% comment %} <div class="question-meta">

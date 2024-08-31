@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate , login
 from .form import SignUpForm ,ProfileForm ,UserForm
 from .models import Profile 
 from ask.models import  Question ,Answer
+from group.models import  Group
 from django.contrib.auth.decorators import login_required 
 from django.shortcuts import get_object_or_404
 
@@ -24,13 +25,19 @@ def signup(request):
 
     return render(request,"registration/signup.html",{"form":form})
 
-    
 @login_required
 def profile(request,slug):
     profile   = get_object_or_404(Profile,slug=slug)
     myposts   = Question.objects.filter(user=request.user).all()[0:3]
     myanswers = Answer.objects.filter(user=request.user).all()[0:3]
-    return render(request,"registration/profile.html",{"profile":profile,'myposts':myposts,'myanswers':myanswers})
+    groups = Group.objects.all()
+
+    mygroups=[]
+    for group in groups : 
+        if request.user in group.members.all() :
+            mygroups.append(group)
+    
+    return render(request,"registration/profile.html",{"profile":profile,'mygroups':mygroups,'myposts':myposts,'myanswers':myanswers})
     # return render(request,"registration/profile.html",{"profile":profile},{'myposts':myposts})
 
 

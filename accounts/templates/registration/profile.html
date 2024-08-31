@@ -32,7 +32,19 @@
               <p><strong>Birth Day :</strong> {{profile.birth_day}}</p>
             </div>
         </section>
-          
+        <section class="user-questions">
+            <h2>My Groups</h2>
+            <ul>
+                {% for group in mygroups  %}
+                <li>
+                    <span>{{group.name}}</span>
+                    <p class="question-description">{{group.bio}}</p>
+                    <a href='{% url "group:group_detail" group.id %}' class="btn-detail">View Group</a>
+                </li>
+                {% endfor %}
+                
+            </ul>
+        </section>
           
           
           <h3 class= "quest_last">Your Last 3 Questions :</h3>
