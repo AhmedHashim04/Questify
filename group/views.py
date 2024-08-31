@@ -1,6 +1,7 @@
 from django.shortcuts import render , redirect ,get_object_or_404
 from .models import Group 
-from ask.models import Question,User 
+from ask.models import Question
+from datetime import datetime
 from django.urls import reverse
 from .form import AddGroupForm
 from ask.form import AskForm
@@ -24,8 +25,6 @@ def add_group(request):
 
     return render(request,"group/add_group.html",{"form":form})
 
-
-
 @login_required
 def group_list(request):
     groups = Group.objects.all()
@@ -43,8 +42,6 @@ def group_list(request):
 
     return render(request,'group/groups.html',{'mygroups':mygroups,'groups':not_my_groups,'user':request.user})
 
-
-
 @login_required
 def join_group(request,id):
     group = get_object_or_404(Group, id=id)
@@ -56,7 +53,6 @@ def join_group(request,id):
         group.members.add(request.user)
 
     return redirect(reverse('group:group_list'))
-        
 
 @login_required
 def group_detail(request,id):
@@ -77,3 +73,38 @@ def group_detail(request,id):
         return render(request, 'group/group_detail.html', {'group': group,'questions': question,'form': form})
     else:
             return redirect(reverse('group:group_list'))
+    
+
+@login_required
+def delete_group(request, id):
+    group = get_object_or_404(Group, id=id)
+    if request.user == group.leader :
+        group.delete()
+        return redirect('group:group_list')
+    return redirect('group:group_detail', id=group.id)
+
+
+
+@login_required
+def edit_group(request,id):
+    group = get_object_or_404(Group,pk=id)
+    if request.method == 'POST':
+
+        if request.user == group.leader:
+            form = AddGroupForm(request.POST,instance=group)
+            if form.is_valid() :
+                myform = form.save(commit=False)
+                myform.leader = request.user
+                myform.last_edit = datetime.now()
+                myform.save()
+
+                return redirect(('group:group_detail'),id=group.id)
+
+    else:
+
+        form = AddGroupForm(instance=group)
+
+
+    return render(request,"group/edit_group.html",{"form":form})
+
+

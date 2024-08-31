@@ -13,7 +13,13 @@
                 {% if group.bio != None %}
                 <p class="question-description">{{group.bio}}</p>
                 {% endif %}
-                
+                {% if request.user == group.leader %}
+                <div class="question-meta">
+                    <a href="{% url 'group:edit_group' group.id %}"class="modify_quest">Edit Group Info</a>
+                    {% comment %} <a href="{% url 'group:edit_group' group.id %}"class="modify_quest">block member</a> {% endcomment %}
+                    <a onclick="return confirm('هل أنت متأكد أنك تريد حذف هذة المجموعة؟');" href="{% url 'group:delete_group' group.id %}" class="modify_quest" >Delete Group</a>
+                </div>
+                {% endif %}
                 <p class="question-meta">Leader : @{{group.leader}}</p>
                 <p class="question-meta">Created at : {{group.created_at}}</p>
                 <div class="question-meta">
