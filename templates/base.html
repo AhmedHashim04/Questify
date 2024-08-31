@@ -18,6 +18,18 @@
             {% comment %} <a href="support.html">Support</a> {% endcomment %}
             <a href="/ask/questions">Questions</a>
             <a href="/ask/">Ask Question</a>
+            
+            {% if request.user.is_authenticated  %}
+            <div class="account-menu">
+                <a href=".." class="group-button">Groups</a>
+                <div class="account-dropdown">
+                    <a href={% url "group:add_group" %}  > Add Group </a>
+                    <a href={% url "group:group_list" %} > Groups </a>
+                    {% comment %} <a href={% url "group:group_list" %} > Groups </a> {% endcomment %}
+                    {% comment %} <a href="{% url "group:add_group" request.user.username %}">{{request.user.username}}</a> {% endcomment %}
+                    {% endif %}
+                </div>
+            </div>
             <div class="account-menu">
                 <a href=".." class="account-button">Account</a>
                 <div class="account-dropdown">
@@ -44,6 +56,7 @@
                     <li><a href="/home">Home</a></li>
                     <li><a href="/ask/questions">Questions</a></li>
                     <li><a href="/ask/">Ask Question</a></li>
+                    <li><a href="/ask/">Groups</a></li>
                     <li><a href="support.html">Support</a></li>
                     <li><a href="privacy_policy.html">Privacy Policy</a></li>
                     <li><a href="terms_of_service.html">Terms of Service</a></li>

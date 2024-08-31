@@ -5,6 +5,9 @@
         <section class="question-detail">
             <div class="question-box">
                 
+                {% if question.last_edit is not null %}
+                <p class="question-meta">last edited in :{{question.last_edit}}</p>
+                {% endif %}
                 <h2 class="question-title">{{question.title}}</h2>
                 <p class="question-description">{{question.content}}</p>
                 <p class="question-meta">@{{question.user}}</p>
@@ -16,7 +19,7 @@
                 </div>
                 {% if request.user == question.user %}
                 <div class="question-meta">
-                    <a href="{% url 'ask:edit_question' question.id %}" style="display:inline;">Edit Question</a>
+                    <a href="{% url 'ask:edit_question' question.id %}"class="modify_quest">Edit Question</a>
                     <a onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا السؤال؟');" href="{% url 'ask:delete_question' question.id %}" class="modify_quest" >Delete Question</a>
                 </div>
                 {% endif %}
@@ -29,49 +32,53 @@
                     {% endif %}
                 </div>
                 
-                {% comment %} <div class="question-meta">
-                <section class="rating">
-                    <form action="#" method="post">
-                        <label for="rating" style="display:inline;" >Rating:</label>
-                        <select id="rating" name="rating">
-                            <option value="1" >1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                        <button type="submit">Submit Rating</button>
+
+                    </section>
+                    
+                    
+                    
+                </div>
+            </section>
+            <section class="social-share">
+                <h3 style="display:inline;" >Share this Question:</h3>
+                <a  href="https://www.facebook.com/sharer/sharer.php?u=URL" target="_blank">Facebook</a>
+                <a  href="https://twitter.com/intent/tweet?url=URL" target="_blank">Twitter</a>
+                <a  href="https://www.linkedin.com/shareArticle?url=URL" target="_blank">LinkedIn</a>
+            </section>
+            <section class="question-detail">
+                <section class="answers">
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <label for="answer">Add Your Answer:</label>
+                        {{ form.as_p }}
+                        <button type="submit">Submit</button>
                     </form>
-                </div> {% endcomment %}
-                </section>
+                    
+                    <h3>Answers:</h3>
+                    <!-- List of answers here -->
 
-                
-                
-            </div>
-        </section>
-        <section class="social-share">
-            <h3 style="display:inline;" >Share this Question:</h3>
-            <a  href="https://www.facebook.com/sharer/sharer.php?u=URL" target="_blank">Facebook</a>
-            <a  href="https://twitter.com/intent/tweet?url=URL" target="_blank">Twitter</a>
-            <a  href="https://www.linkedin.com/shareArticle?url=URL" target="_blank">LinkedIn</a>
-        </section>
-        <section class="question-detail">
-            <section class="answers">
+                    {% for answer in answers %}
 
-                <form method="post">
-                    {% csrf_token %}
-                    <label for="answer">Add Your Answer:</label>
-                    {{ form.as_p }}
-                    <button type="submit">Submit</button>
-                </form>
-
-                <h3>Answers:</h3>
-                <!-- List of answers here -->
-                 {% for answer in answers %}
                     <div class="answer-item">
                         <p class="answer-content">{{answer}}</p>
+                        <div class="question-meta">
+                            <span class="likes">Likes: 150</span> | 
+                            <span class="views">Views: 500</span> |
+                        </div>
                         <p class="question-meta">@{{answer.user}}</p>
                         <p class="question-meta">{{answer.created_at}}</p>
+                        
+                        
+                    <div class="question-meta">
+                            {% if request.user in answer.like.all %}
+                            <a href="{% url "ask:like_answer" id=answer.id  qid=question.id  %}"> DisLike</a>
+
+                            {% else %}
+                            
+                            <a href="{% url "ask:like_answer" id=answer.id  qid=question.id  %}">Like </a>
+                            {% endif %}
+                        </div>
                     </div>
                 {% endfor %}
             </section>
@@ -79,3 +86,18 @@
 
     </main>
     {% endblock body %}
+
+                    {% comment %} <div class="question-meta">
+                    <section class="rating">
+                        <form action="#" method="post">
+                        <label for="rating" style="display:inline;" >Rating:</label>
+                        <select id="rating" name="rating">
+                            <option value="1" >1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            </select>
+                        <button type="submit">Submit Rating</button>
+                        </form>
+                        </div> {% endcomment %}

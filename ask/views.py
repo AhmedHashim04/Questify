@@ -3,10 +3,11 @@ from .models import Question , Answer
 from django.urls import reverse
 from .form import AskForm , AnswerForm
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
  
 def question_list(request):
-    questions = Question.objects.all()
+    questions = Question.objects.filter(group=None)
     
     return render(request,'ask/questions.html',{'questions':questions})
 
@@ -15,7 +16,7 @@ def question_list(request):
 def question_detail(request, id):
     question = get_object_or_404(Question, pk=id)
     answers = Answer.objects.filter(question=question)
-
+    
     if request.method == 'POST':
         form = AnswerForm(request.POST)
         if form.is_valid():
@@ -29,6 +30,7 @@ def question_detail(request, id):
 
     return render(request, 'ask/question_detail.html', {'question': question,'answers': answers,'form': form})
 
+@login_required
 def ask(request):
     if request.method == 'POST':
         form = AskForm(request.POST)
@@ -43,12 +45,25 @@ def ask(request):
 
     return render(request,"ask/ask_question.html",{"form":form})
 
-def like(request, id):
+@login_required
+def like(request, id ):
     question = get_object_or_404(Question, id=id)
     if request.user in question.like.all() :
         question.like.remove(request.user)
     else :
         question.like.add(request.user)
+
+    return redirect(reverse('ask:question_detail', args=[question.id]))
+
+@login_required
+def like_answer(request, id , qid):
+    question = get_object_or_404(Question, id=qid)
+    answer = get_object_or_404(Answer, id=id)
+    
+    if request.user in answer.like.all() :
+        answer.like.remove(request.user)
+    else :
+        answer.like.add(request.user)
 
     return redirect(reverse('ask:question_detail', args=[question.id]))
 
@@ -69,9 +84,9 @@ def edit_question(request,id):
         if request.user == question.user:
             form = AskForm(request.POST,instance=question)
             if form.is_valid() :
-                # form.save()
                 myform = form.save(commit=False)
                 myform.user = request.user
+                myform.last_edit = datetime.now()
                 myform.save()
 
                 return redirect(('ask:question_detail'),id=question.id)
@@ -85,18 +100,3 @@ def edit_question(request,id):
 
 
 
-# @login_required
-# def edit_question(request, id):
-#     question = get_object_or_404(Question, id=id)
-
-#         return redirect('ask:question_detail', id=question.id)
-
-#     if request.method == "POST":
-#         form = QuestionForm(request.POST, instance=question)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('ask:question_detail', id=question.id)
-#     else:
-#         form = QuestionForm(instance=question)
-
-#     return render(request, 'ask/edit_question.html', {'form': form})

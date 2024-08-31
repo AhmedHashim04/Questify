@@ -5,11 +5,13 @@
     <main>
         <section class="ask-question">
             <h2>Add a Group</h2>
+
             <form action="#" method="post">
                 {% csrf_token %}
                 {{form}}
                 <button type="submit">Submit Group</button>
             </form>
+
         </section>
     </main>
 
