@@ -15,7 +15,9 @@ class Question(models.Model):
     group      = models.ForeignKey(Group ,on_delete=models.CASCADE, blank=True ,null=True,related_name="group_question")
 
     class Meta:
+        
         get_latest_by =  'created_at'
+        
 
     def get_absolute_url(self):
         return reverse("ask:question_detail", kwargs={"id": self.pk})

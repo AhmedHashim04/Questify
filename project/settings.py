@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'group',
     'ask',
     'home',
+    'contact',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -43,16 +43,26 @@
 
                     </section>
 
+                    <h1>Add Question in Group : </h1>
+                        <main>
+                            <section class="ask-question">
+                                <h2>Ask a Question</h2>
+                                <form action="#" method="post">
+                                    {% csrf_token %}
+                                    {{form}}
+                                    <button type="submit">Submit Question</button>
+                                </form>
+                            </section>
+                        </main>
                     <h1>Questions : </h1>
-
-                    {% for question in questions %}
+                    {% for question in questions  %}
                     <div class="question-item">
                         <div class="question-box">
                             <h3 class="question-title">{{question.title}}</h3>
                             <p class="question-user">@{{question.user}}</p>
-                            <p class="question-description">{{question.content}}</p>
+                            <p class="question-description">{{question.content|default_if_none:"title is clear"}}</p>
                             <p class="question-meta">{{question.created_at}}</p>
-                            {% if question.rating == 1 %}
+                            {% comment %} {% if question.rating == 1 %}
                             <p class="question-meta">Rating : ♦</p>
                             {% elif question.rating == 2 %}
                             <p class="question-meta">Rating : ♦ ♦ </p>
@@ -66,7 +76,7 @@
                             <p class="question-stats"> 
                                 <span class="likes">Likes: 150</span> | 
                                 <span class="views">Views: 500</span>
-                            </p>
+                            </p> {% endcomment %}
                             <a href="{% url 'ask:question_detail' question.id %}" class="btn details-btn">View Details</a>
                         </div>
                     </div>
@@ -82,6 +92,8 @@
                 <a  href="https://www.linkedin.com/shareArticle?url=URL" target="_blank">LinkedIn</a>
             </section>
             <!-- List of answers here -->
+            {% empty %}
+            <li>Sorry, no questions in this group.</li>
             {% endfor %}
         </section>
     </section>

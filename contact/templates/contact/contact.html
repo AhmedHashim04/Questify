@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+
+
+          <h2 class="contact-title">Get in Touch</h2>
+
+          <form class="form-contact contact_form" method="post">
+            {% csrf_token %}
+                  <input class="form-control" name="email"  type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'" placeholder = 'Enter email address'>
+                  <input class="form-control" name="subject"  type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Subject'" placeholder = 'Enter Subject'>
+                  <textarea class="form-control w-100" name="message"  cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Message'" placeholder = 'Enter Message'></textarea>
+                  <button type="submit" class="button button-contactForm btn_4 boxed-btn">Send Message</button>
+  
+          </form>
+
+              <h3>Our Position:{{myinfo.place}}</h3>
+              <h3>Our Phone Number: +20 {{myinfo.tel}}</h3>
+              <h3>{{myinfo.email}}</h3>
+              <p>Send us your query anytime!</p>
+
+
+</body>
+{% endblock body %}

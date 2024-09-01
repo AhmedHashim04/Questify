@@ -27,7 +27,7 @@ def add_group(request):
 
 @login_required
 def group_list(request):
-    groups = Group.objects.all()
+    groups = Group.objects.all().order_by('created_at')
 
     mygroups=[]
     for group in groups : 
@@ -62,10 +62,10 @@ def group_detail(request,id):
     if request.method == 'POST':
         form = AskForm(request.POST)
         if form.is_valid():
-            answer = form.save(commit=False)
-            answer.user = request.user
-            answer.group = group
-            answer.save()
+            myform = form.save(commit=False)
+            myform.user = request.user
+            myform.group = group
+            myform.save()
             return redirect('group:group_detail', id=group.id)
     else:
         form = AskForm()

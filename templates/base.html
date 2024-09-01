@@ -18,6 +18,7 @@
             {% comment %} <a href="support.html">Support</a> {% endcomment %}
             <a href="/ask/questions">Questions</a>
             <a href="/ask/">Ask Question</a>
+            <a href="/contact/">Contact</a>
             
             {% if request.user.is_authenticated  %}
             <div class="account-menu">
@@ -81,7 +82,7 @@
                 </form>
             </div>
         </div>
-        <p>&copy; 2024 Questify. All rights reserved.</p>
+        <p>&copy; {{ time|date:"SHORT_DATE_FORMAT" }} Questify. All rights reserved.</p>
     </footer>
     
 </body>

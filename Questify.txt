@@ -13,19 +13,23 @@ Profile :
 
 	info About the User 
 	his lastest Questions and Lastest Answers{activity history}
-	and User Groups and User Friends
-
+	and User Groups
+-------------------
+	and User Friends
++++++++++++++++++++++++++++++++++
 
 Edit Profile :
 	Edit User Info
 	Can go to change password 
-
+-----------------
 
 Questions : 
 	Last questions in the Web
+-------------------------
 
 question detail :
-	detail about question : likes , Vews ,Answers ,rate
+	detail about question : likes , Vews ,Answers 
+	rate
 
 ask Question : add Question
 
