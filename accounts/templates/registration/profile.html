@@ -3,24 +3,34 @@
 {% block body %}
 
 <main>
-  <section class="notifications">
+  {% comment %} <section class="notifications">
       <h3>Notifications:</h3>
       <ul>
           <li>You have a new comment on your question: <a href="question_detail.html?id=1">Question Title</a></li>
           <li>Your question has been answered: <a href="answer_detail.html?id=2">Answer Title</a></li>
       </ul>
-  </section>
+  </section> {% endcomment %}
 
 
 
-
-
+        {% if profile.user.id != my_user.id %}
+            
         <section class="profile">
             <div class="profile-container">
                 <div class="profile-header">
                     <img src="{{profile.image}}" alt="User Avatar" class="profile-avatar">
                     <h2>{{profile.user}}</h2>
+
+                    {% if my_user == profile.user %}
                     <a href="{% url 'accounts:profile_edit' profile.slug %}" class="btn-edit-profile">Edit Profile</a>
+                    
+                    {% comment %} {% elif profile.user in profile.friends.all %} 
+                    <a href='{% url "accounts:add_friend" profile.user.id %}' class="btn-detail">remove Friend</a>
+                    {% else %}
+                    <a href='{% url "accounts:add_friend" profile.user.id %}' class="btn-detail">Add Friend</a>
+                    {% endcomment %}
+                    {% endif %} 
+
                 </div> 
                 
                 <div class="profile-info">
@@ -32,6 +42,31 @@
               <p><strong>Birth Day :</strong> {{profile.birth_day}}</p>
             </div>
         </section>
+
+        {% else %}
+
+        <section class="profile">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <img src="{{profile.image}}" alt="User Avatar" class="profile-avatar">
+                    <h2>{{profile.user}}</h2>
+
+                    <a href="{% url 'accounts:profile_edit' profile.slug %}" class="btn-edit-profile">Edit Profile</a>
+
+
+                </div> 
+                
+                <div class="profile-info">
+              <h3>Profile Information</h3>
+              <p><strong>Bio:</strong> {{profile.bio}}</p>
+              <p><strong>Email:</strong> {{profile.user.email}}</p>
+              <p><strong>Phone:</strong> {{profile.tel}}</p>
+              <p><strong>Joined:</strong> Joined</p>
+              <p><strong>Birth Day :</strong> {{profile.birth_day}}</p>
+            </div>
+        </section>
+
+
         <section class="user-questions">
             <h2>My Groups</h2>
             <ul>
@@ -47,6 +82,20 @@
         </section>
           
           
+          <h3 class= "quest_last">Your Friends :</h3>
+          {% for friend in myfriends %}
+          
+          <div class="user-questions">
+              <ul id="questions-list">
+                <h4> {{friend.username}}</h3>
+
+                    </ul>
+                {% comment %} <a href='{{ mypost.get_absolute_url }}' class="btn-action">View Detail</a> {% endcomment %}
+                <a href="{% url 'accounts:profile' friend.id %}" class="btn details-btn">View Details</a>
+                
+            </div>
+            {% endfor %}
+
           <h3 class= "quest_last">Your Last 3 Questions :</h3>
           {% for mypost in myposts %}
           
@@ -76,5 +125,6 @@
             {% endfor %}
   
 </main>
+{% endif %}
 
     {% endblock body %}

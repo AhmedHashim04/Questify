@@ -16,6 +16,7 @@ class Profile(models.Model):
     tel         = models.CharField(max_length=20,null=True,blank=True)
     image       = models.ImageField(upload_to="profile_image", height_field=None, width_field=None, max_length=None,null=True,blank=True)
     slug        = models.SlugField(unique=True,blank=True,null=True)
+    friends     = models.ManyToManyField(User , blank=True ,related_name="friends")
     # country
 
     def __str__(self) -> str:
@@ -36,3 +37,8 @@ class Profile(models.Model):
     def create_user_profile(sender, **kwargs):
         if kwargs['created']:
             Profile.objects.create(user=kwargs['instance'])
+
+    # @receiver(post_save, sender=User)
+    # def create_user_friend(sender, **kwargs):
+    #     if kwargs['created']:
+    #         Profile.objects.get(friends).create(user=kwargs['instance'])

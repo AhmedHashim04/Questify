@@ -5,6 +5,7 @@ import datetime
 # Create your views here.
 
 def home(request):
-    lastest_questions = Question.objects.latest()
+    lastest_questions = Question.objects.filter(group=None).latest()
+
       
     return render(request,'home/home.html',{'lastest_questions':lastest_questions})

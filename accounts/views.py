@@ -37,7 +37,9 @@ def profile(request,slug):
         if request.user in group.members.all() :
             mygroups.append(group)
     
-    return render(request,"registration/profile.html",{"profile":profile,'mygroups':mygroups,'myposts':myposts,'myanswers':myanswers})
+    friends = profile.friends.all()
+    
+    return render(request,"registration/profile.html",{"my_user":request.user,"profile":profile,'mygroups':mygroups,'myposts':myposts,"myfriends":friends,'myanswers':myanswers})
     # return render(request,"registration/profile.html",{"profile":profile},{'myposts':myposts})
 
 
@@ -63,3 +65,15 @@ def editprofile(request,slug):
 
     return render(request,"registration/profile_edit.html",{"profile_form":profile_form,'user_form':user_form})
 
+# @login_required
+# def add_friend(request,id):
+#     friend_profile = Profile.objects.get(id=id)
+#     myprofile =Profile.objects.get(user=request.user)
+#     if request.user in friend_profile.friends.all() :
+#         friend_profile.friends.remove(request.user.id)
+#         myprofile.friends.remove(friend_profile.user.id)
+#     else :
+#         friend_profile.friends.add(request.user.id)
+#         myprofile.friends.add(friend_profile.user.id)
+
+#     return redirect(reverse('accounts:profile', args=[request.user.id]))

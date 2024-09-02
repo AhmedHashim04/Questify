@@ -9,6 +9,7 @@
         <ul>
             {% for group in mygroups  %}
             <li>
+                
                 <span>{{group.name}}</span>
                 <p class="question-description">{{group.bio}}</p>
                 <a href='{% url "group:group_detail" group.id %}' class="btn-detail">View Group</a>

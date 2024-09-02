@@ -7,13 +7,17 @@ from datetime import datetime
 
  
 def question_list(request):
-    questions = Question.objects.filter(group=None)
+    # TODO: search bar
+
+    questions = Question.objects.filter(group=None).all().order_by("created_at").reverse()
     
     return render(request,'ask/questions.html',{'questions':questions})
 
 
 @login_required
 def question_detail(request, id):
+    # TODO: count of people who click to view post
+
     question = get_object_or_404(Question, pk=id)
     answers = Answer.objects.filter(question=question)
     
@@ -57,6 +61,8 @@ def like(request, id ):
 
 @login_required
 def like_answer(request, id , qid):
+    # TODO: best Answer in the head of answers
+
     question = get_object_or_404(Question, id=qid)
     answer = get_object_or_404(Answer, id=id)
     

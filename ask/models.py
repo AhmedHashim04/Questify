@@ -5,8 +5,8 @@ from group.models import Group
 
 # Create your models here.
 class Question(models.Model):
-    title      = models.CharField(max_length=40 , unique=True )
-    content    = models.TextField(max_length=  40, blank=True  )
+    title      = models.CharField(max_length=1000 , unique=True )
+    content    = models.TextField(max_length=40000, blank=True  )
     rating     = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True,auto_created=True,null=True, blank=True)
     last_edit  = models.DateTimeField(auto_created=True,null=True, blank=True)
@@ -27,7 +27,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     user       = models.ForeignKey(User, on_delete=models.CASCADE,related_name="Answer_user")
-    content    = models.TextField(max_length=40, blank=True)
+    content    = models.TextField(max_length=4000, blank=True)
     created_at = models.DateTimeField(auto_now=True, auto_created=True)
     question   = models.ForeignKey(Question, on_delete=models.CASCADE,related_name="question") 
     like       = models.ManyToManyField(User , blank=True ,related_name="Answer_like")

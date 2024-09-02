@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from .views import handel404 , handel500
 
 urlpatterns = [
     path('accounts/', include('accounts.urls',namespace='accounts')),
@@ -27,4 +28,6 @@ urlpatterns = [
 
     ]
 
+handlr404 = 'project.views.handel404'
+handlr500 = 'project.views.handel500'
 

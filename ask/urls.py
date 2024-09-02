@@ -14,6 +14,3 @@ urlpatterns = [
 
 
 ]
-
-# The included URLconf '14' does not appear to have any patterns in it. If you see the 'urlpatterns' variable with valid patterns in the file then the issue is probably caused by a circular import.
-# 'ManyRelatedManager' object has no attribute 'delete'

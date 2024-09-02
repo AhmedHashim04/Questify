@@ -63,8 +63,8 @@
                     <div class="answer-item">
                         <p class="answer-content">{{answer}}</p>
                         <div class="question-meta">
-                            <span class="likes">Likes: 150</span> | 
-                            <span class="views">Views: 500</span> |
+                            <span class="likes">Likes: {{answer.like.count}}</span> 
+                            {% comment %} <span class="views">Views: 500</span> | {% endcomment %}
                         </div>
                         <p class="question-meta">@{{answer.user}}</p>
                         <p class="question-meta">{{answer.created_at}}</p>
