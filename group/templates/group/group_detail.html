@@ -42,6 +42,22 @@
                 
 
                     </section>
+                    <section class="search">
+                        <h2>Search Questions in Group</h2>
+                        
+                        <form action="{% url 'group:group_detail' group.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="text" id="search" name="search_txt" placeholder="Search for questions... in title or descreption">
+                            <label for="from">From</label>
+                            <input type="date" name="from" id="from" >
+                            <label for="to">To</label>
+                            {{time_now|date:"d/j/y "}}
+                            <input type="date" name="to" id="to"  >
+                            
+                            <button type="submit">Search</button>
+                        </form>
+                    </section>
+
 
                     <h1>Add Question in Group : </h1>
                         <main>

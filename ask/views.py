@@ -7,9 +7,38 @@ from datetime import datetime
 
  
 def question_list(request):
-    # TODO: search bar
 
-    questions = Question.objects.filter(group=None).all().order_by("created_at").reverse()
+    if request.method == 'POST':
+
+        search_info = request.POST
+        question_contain_word = search_info['search_txt']
+        search_from_time = search_info['from']
+        search_to_time = search_info['to']
+        
+        if not search_from_time and not search_to_time :
+
+            a = Question.objects.filter(group=None , content__icontains=question_contain_word   )
+            b = Question.objects.filter(group=None , title__icontains=question_contain_word   )
+            questions = a.union(b)
+            
+        elif search_from_time and not search_to_time  :
+            a = Question.objects.filter(group=None , content__icontains=question_contain_word,created_at__gte=(search_from_time))
+            b = Question.objects.filter(group=None , title__icontains=question_contain_word,created_at__gte=(search_from_time)   )
+            questions = a.union(b)
+        
+        elif not search_from_time and search_to_time  :
+            a = Question.objects.filter(group=None , content__icontains=question_contain_word,created_at__lte=(search_to_time))
+            b = Question.objects.filter(group=None , title__icontains=question_contain_word,created_at__lte=(search_to_time)   )
+            questions = a.union(b)
+        
+        else :
+            a = Question.objects.filter(group=None , content__icontains=question_contain_word,created_at__range=(search_from_time,search_to_time))
+            b = Question.objects.filter(group=None , title__icontains=question_contain_word,created_at__range=(search_from_time,search_to_time)   )
+            questions = a.union(b)
+            
+            
+    else:
+            questions = Question.objects.filter(group=None)
     
     return render(request,'ask/questions.html',{'questions':questions})
 
@@ -91,8 +120,10 @@ def edit_question(request,id):
             form = AskForm(request.POST,instance=question)
             if form.is_valid() :
                 myform = form.save(commit=False)
+                myform_created_at=myform.created_at
                 myform.user = request.user
                 myform.last_edit = datetime.now()
+                myform.created_at = myform_created_at
                 myform.save()
 
                 return redirect(('ask:question_detail'),id=question.id)
