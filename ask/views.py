@@ -1,13 +1,15 @@
 from django.shortcuts import render , redirect ,get_object_or_404
-from .models import Question , Answer 
 from django.urls import reverse
 from .form import AskForm , AnswerForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+# from django.http import JsonResponse
+from friend.models import Friend
+from .models import Question , Answer 
 
  
 def question_list(request):
-
+        
     if request.method == 'POST':
 
         search_info = request.POST
@@ -39,8 +41,9 @@ def question_list(request):
             
     else:
             questions = Question.objects.filter(group=None)
-    
-    return render(request,'ask/questions.html',{'questions':questions})
+            my_friends = Friend.objects.filter(user=request.user,status="confirmed")
+
+    return render(request,'ask/questions.html',{"my_friends":my_friends,'questions':questions})
 
 
 @login_required
@@ -80,6 +83,7 @@ def ask(request):
 
 @login_required
 def like(request, id ):
+    
     question = get_object_or_404(Question, id=id)
     if request.user in question.like.all() :
         question.like.remove(request.user)
@@ -87,7 +91,7 @@ def like(request, id ):
         question.like.add(request.user)
 
     return redirect(reverse('ask:question_detail', args=[question.id]))
-
+    # return redirect(reverse('ask:question_list'))
 @login_required
 def like_answer(request, id , qid):
     # TODO: best Answer in the head of answers

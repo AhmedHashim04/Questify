@@ -15,6 +15,7 @@ class Profile(models.Model):
     bio         = models.TextField(max_length=50,null=True,blank=True)
     tel         = models.CharField(max_length=20,null=True,blank=True)
     image       = models.ImageField(upload_to="profile_image", height_field=None, width_field=None, max_length=None,null=True,blank=True)
+    cover       = models.ImageField(upload_to="profile_cover", height_field=None, width_field=None, max_length=None,null=True,blank=True)
     slug        = models.SlugField(unique=True,blank=True,null=True)
     friends     = models.ManyToManyField(User , blank=True ,related_name="friends")
     # country

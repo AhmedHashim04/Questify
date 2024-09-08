@@ -40,7 +40,7 @@ def group_list(request):
             not_my_groups.append(group)
 
 
-    return render(request,'group/groups.html',{'mygroups':mygroups,'groups':not_my_groups,'user':request.user})
+    return render(request,'group/groups.html',{'mygroups':mygroups,'groups':groups,'user':request.user})
 
 @login_required
 def join_group(request,id):

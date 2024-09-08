@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate , login
 from .form import SignUpForm ,ProfileForm ,UserForm
 from .models import Profile 
 from ask.models import  Question ,Answer
+from friend.models import  Friend
 from group.models import  Group
 from django.contrib.auth.decorators import login_required 
 from django.shortcuts import get_object_or_404
@@ -28,18 +29,18 @@ def signup(request):
 @login_required
 def profile(request,slug):
     profile   = get_object_or_404(Profile,slug=slug)
-    myposts   = Question.objects.filter(user=request.user).all()[0:3]
-    myanswers = Answer.objects.filter(user=request.user).all()[0:3]
-    groups = Group.objects.all()
+    myposts   = Question.objects.filter(user=profile.user).all()[0:3]
+    myanswers = Answer.objects.filter(user=profile.user).all()[0:3]
+    friend_status = Friend.objects.filter(user=request.user , friend = profile.user ).all()
+    if friend_status :
+        friend_status = Friend.objects.filter(user=request.user , friend = profile.user ).all()[0]
+    
 
-    mygroups=[]
-    for group in groups : 
-        if request.user in group.members.all() :
-            mygroups.append(group)
+    a = Group.objects.filter(leader = request.user)
+    b = Group.objects.filter( members__exact =  profile.user )
+    groups = a.union(b)
     
-    friends = profile.friends.all()
-    
-    return render(request,"registration/profile.html",{"my_user":request.user,"profile":profile,'mygroups':mygroups,'myposts':myposts,"myfriends":friends,'myanswers':myanswers})
+    return render(request,"registration/profile.html",{"my_user":request.user,"profile":profile,'mygroups':groups,'questions':myposts,"is_friend":friend_status,'answers':myanswers})
     # return render(request,"registration/profile.html",{"profile":profile},{'myposts':myposts})
 
 

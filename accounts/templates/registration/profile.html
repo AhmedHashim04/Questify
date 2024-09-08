@@ -1,130 +1,214 @@
 {% extends "base.html" %}
 
 {% block body %}
+  <main class="profile-page layout layout--3">
+    <div class="container">
+      <!-- Topics Start -->
+      <div class="topics">
+        <div class="topics__header">
+          <h2>Browse Topics</h2>
+        </div>
+        <ul class="topics__list">
+          <li>
+            <a href="/" class="active">All <span>553</span></a>
+          </li>
+          <li>
+            <a href="/">Python <span>232</span></a>
+          </li>
+          <li>
+            <a href="/">JavaScript <span>122</span></a>
+          </li>
+          <li>
+            <a href="/">React <span>57</span></a>
+          </li>
+          <li>
+            <a href="/">Database <span>90</span></a>
+          </li>
+        </ul>
+        <button class="btn btn--link" href="/">
+          More
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+            <title>chevron-down</title>
+            <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
+          </svg>
+        </button>
+      </div>
+      <!-- Topics End -->
 
-<main>
-  {% comment %} <section class="notifications">
-      <h3>Notifications:</h3>
-      <ul>
-          <li>You have a new comment on your question: <a href="question_detail.html?id=1">Question Title</a></li>
-          <li>Your question has been answered: <a href="answer_detail.html?id=2">Answer Title</a></li>
-      </ul>
-  </section> {% endcomment %}
-
-
-
-        {% if profile.user.id != my_user.id %}
-            
-        <section class="profile">
-            <div class="profile-container">
-                <div class="profile-header">
-                    <img src="{{profile.image}}" alt="User Avatar" class="profile-avatar">
-                    <h2>{{profile.user}}</h2>
-
-                    {% if my_user == profile.user %}
-                    <a href="{% url 'accounts:profile_edit' profile.slug %}" class="btn-edit-profile">Edit Profile</a>
-                    
-                    {% comment %} {% elif profile.user in profile.friends.all %} 
-                    <a href='{% url "accounts:add_friend" profile.user.id %}' class="btn-detail">remove Friend</a>
-                    {% else %}
-                    <a href='{% url "accounts:add_friend" profile.user.id %}' class="btn-detail">Add Friend</a>
-                    {% endcomment %}
-                    {% endif %} 
-
-                </div> 
-                
-                <div class="profile-info">
-              <h3>Profile Information</h3>
-              <p><strong>Bio:</strong> {{profile.bio}}</p>
-              <p><strong>Email:</strong> {{profile.user.email}}</p>
-              <p><strong>Phone:</strong> {{profile.tel}}</p>
-              <p><strong>Joined:</strong> Joined</p>
-              <p><strong>Birth Day :</strong> {{profile.birth_day}}</p>
+      <!-- Room List Start -->
+      <div class="roomList">
+        <div class="profile">
+          <div class="profile__avatar">
+            <div class="avatar avatar--large active">
+              <img src="https://randomuser.me/api/portraits/men/11.jpg" />
             </div>
-        </section>
+          </div>
+          <div class="profile__info">
+            <h3>{{profile.user.first_name}} {{profile.user.last_name}}</h3>
+            <p>@{{profile.user}}</p>
 
-        {% else %}
+            {% if my_user == profile.user %}
+            <a href='{% url "accounts:profile_edit" profile.slug %}' class="btn btn--main btn--pill">Edit Profile</a>
+            {% else %}
 
-        <section class="profile">
-            <div class="profile-container">
-                <div class="profile-header">
-                    <img src="{{profile.image}}" alt="User Avatar" class="profile-avatar">
-                    <h2>{{profile.user}}</h2>
-
-                    <a href="{% url 'accounts:profile_edit' profile.slug %}" class="btn-edit-profile">Edit Profile</a>
-
-
-                </div> 
-                
-                <div class="profile-info">
-              <h3>Profile Information</h3>
-              <p><strong>Bio:</strong> {{profile.bio}}</p>
-              <p><strong>Email:</strong> {{profile.user.email}}</p>
-              <p><strong>Phone:</strong> {{profile.tel}}</p>
-              <p><strong>Joined:</strong> Joined</p>
-              <p><strong>Birth Day :</strong> {{profile.birth_day}}</p>
+              {% if not is_friend %}
+              <a href='{% url "friend:add_friend" profile.user.id %}' class="btn btn--main btn--pill">Add Friend</a>
+              {% elif is_friend.status == "waiting" %}
+              <a href='{% url "friend:add_friend" profile.user.id %}' class="btn btn--main btn--pill">Cancel Request</a>
+              {% elif is_friend.status == "confirmed" %}
+              <a href='{% url "friend:add_friend" profile.user.id %}' class="btn btn--main btn--pill">Remove Friend</a>
+              {% endif %}
+            {% endif %}
             </div>
-        </section>
+          <div class="profile__about">
+            <h3>About</h3>
+            <p>
+              {% if profile.bio %}
+              Bio : {{profile.bio}}
+              <br>
+              {% endif %}
+              {% if profile.birth_day %}
+              Birthday :  {{profile.birth_day|date}}
+              <br>
+              {% endif %}
+              {% if profile.tel %}
+              Tel : {{profile.tel}}
+              <br>
+              {% endif %}
+              {% if profile.user.email %}
+              Email : {{profile.user.email}}
+              <br>
+              {% endif %}
+            </p>
+          </div>
+        </div>
 
-
-        <section class="user-questions">
-            <h2>My Groups</h2>
-            <ul>
-                {% for group in mygroups  %}
-                <li>
-                    <span>{{group.name}}</span>
-                    <p class="question-description">{{group.bio}}</p>
-                    <a href='{% url "group:group_detail" group.id %}' class="btn-detail">View Group</a>
-                </li>
-                {% endfor %}
-                
-            </ul>
-        </section>
+        <div class="roomList__header">
+          <div>
+            <h2>Last Questions From {{profile.user.first_name}} . </a>
+            </h2>
+          </div>
+        </div>
+        
+        {% for question in questions  %}
           
           
-          <h3 class= "quest_last">Your Friends :</h3>
-          {% for friend in myfriends %}
+        <div class="roomListRoom">
+          <div class="roomListRoom__header">
+            <a href='{% url "ask:question_detail" question.id %}' class="roomListRoom__author">
+              <div class="avatar avatar--small active">
+                <img src="https://randomuser.me/api/portraits/men/11.jpg" />
+              </div>
+              <span>@{{question.user.username}}</span>
+            </a>
+            <div class="roomListRoom__actions">
+              <span>{{question.created_at|timesince}}</span>
+
+            </div>
+          </div>
+          <div class="roomListRoom__content">
+            <a href='{% url "ask:question_detail" question.id %}'>{{question.title}}</a>
+            <p>
+            {{question.content}}
+            </p>
+          </div>
+          <div class="roomListRoom__meta">
+            <a class="roomListRoom__joined">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                <title>user-group</title>
+                <path
+                  d="M30.539 20.766c-2.69-1.547-5.75-2.427-8.92-2.662 0.649 0.291 1.303 0.575 1.918 0.928 0.715 0.412 1.288 1.005 1.71 1.694 1.507 0.419 2.956 1.003 4.298 1.774 0.281 0.162 0.456 0.487 0.456 0.85v4.65h-4v2h5c0.553 0 1-0.447 1-1v-5.65c0-1.077-0.56-2.067-1.461-2.584z">
+                </path>
+                <path
+                  d="M22.539 20.766c-6.295-3.619-14.783-3.619-21.078 0-0.901 0.519-1.461 1.508-1.461 2.584v5.65c0 0.553 0.447 1 1 1h22c0.553 0 1-0.447 1-1v-5.651c0-1.075-0.56-2.064-1.461-2.583zM22 28h-20v-4.65c0-0.362 0.175-0.688 0.457-0.85 5.691-3.271 13.394-3.271 19.086 0 0.282 0.162 0.457 0.487 0.457 0.849v4.651z">
+                </path>
+                <path
+                  d="M19.502 4.047c0.166-0.017 0.33-0.047 0.498-0.047 2.757 0 5 2.243 5 5s-2.243 5-5 5c-0.168 0-0.332-0.030-0.498-0.047-0.424 0.641-0.944 1.204-1.513 1.716 0.651 0.201 1.323 0.331 2.011 0.331 3.859 0 7-3.141 7-7s-3.141-7-7-7c-0.688 0-1.36 0.131-2.011 0.331 0.57 0.512 1.089 1.075 1.513 1.716z">
+                </path>
+                <path
+                  d="M12 16c3.859 0 7-3.141 7-7s-3.141-7-7-7c-3.859 0-7 3.141-7 7s3.141 7 7 7zM12 4c2.757 0 5 2.243 5 5s-2.243 5-5 5-5-2.243-5-5c0-2.757 2.243-5 5-5z">
+                </path>
+              </svg>
+              5.3k Joined
+            </a>
+            <p class="roomListRoom__topic">Python</p>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+      <!-- Room List End -->
+
+      <!-- Activities Start -->
+      <div class="activities">
+
+        <div class="activities__header">
+          <h2>My Groups</h2>
+        </div>
+        {% for group in mygroups  %}
+        <div class="activities__box">
+          <div class="activities__boxHeader roomListRoom__header">
+            <a href='{% url "group:group_detail" group.id %}' class="roomListRoom__author">
+              <div class="avatar avatar--small">
+                <img src="https://randomuser.me/api/portraits/women/11.jpg" />
+              </div>
+              <p>
+                @{{group.leader}}
+                <span>{{group.created_at|timesince}}</span>
+              </p>
+            </a>
+            <div class="roomListRoom__actions">
+              {% comment %} <a href="#">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                  <title>delete</title>
+                  <path
+                    d="M30 4h-8v-3c0-0.553-0.447-1-1-1h-10c-0.553 0-1 0.447-1 1v3h-8v2h2v24c0 1.104 0.897 2 2 2h20c1.103 0 2-0.896 2-2v-24h2v-2h-0zM12 2h8v2h-8v-2zM26.002 30l-0.002 1v-1h-20v-24h20v24h0.002z">
+                  </path>
+                </svg>
+              </a> {% endcomment %}
+            </div>
+          </div>
+          <div class="activities__boxContent">
+            <p>“<a href='{% url "group:group_detail" group.id %}'>{{group.name}}</a>”</p>
+            <div class="activities__boxRoomContent">
+              {{group.bio}}
+            </div>
+          </div>
+        </div>          
+        {% endfor %}
+
+        <div class="activities__header">
+          <h2>My Last 3 Answers</h2>
+        </div>
+
+        {% for answer in answers  %}
+
+        <div class="activities__box">
+          <div class="activities__boxHeader roomListRoom__header">
+            <a href='{% url "ask:question_detail" answer.question.id %}' class="roomListRoom__author">
+              <div class="avatar avatar--small">
+                <img src="https://randomuser.me/api/portraits/women/11.jpg" />
+              </div>
+              <p>
+                @{{answer.user}}
+                <span>{{answer.created_at|timesince}}</span>
+              </p>
+            </a>
+
+          </div>
           
-          <div class="user-questions">
-              <ul id="questions-list">
-                <h4> {{friend.username}}</h3>
-
-                    </ul>
-                {% comment %} <a href='{{ mypost.get_absolute_url }}' class="btn-action">View Detail</a> {% endcomment %}
-                <a href="{% url 'accounts:profile' friend.id %}" class="btn details-btn">View Details</a>
-                
+          <div class="activities__boxContent">
+            <p>replied to question“<a href='{% url "ask:question_detail" answer.question.id %}'>{{answer.question.title|truncatechars:10}}</a>”</p>
+            <div class="activities__boxRoomContent">
+              {{answer.question.content|truncatewords:4}}
             </div>
-            {% endfor %}
+          </div>
+        </div>          
+        
+        {% endfor %}
+      </div>
+      <!-- Activities End -->
+    </div>
+  </main>
 
-          <h3 class= "quest_last">Your Last 3 Questions :</h3>
-          {% for mypost in myposts %}
-          
-          <div class="user-questions">
-              <ul id="questions-list">
-                <h4> {{mypost.title}}</h3>
-                <h6>{{mypost.content}}</h3>
-                <h6> {{mypost.created_at}}</h3>
-                    </ul>
-                {% comment %} <a href='{{ mypost.get_absolute_url }}' class="btn-action">View Detail</a> {% endcomment %}
-                <a href="{% url 'ask:question_detail' mypost.id %}" class="btn details-btn">View Details</a>
-                
-            </div>
-            {% endfor %}
-            <hr>
-            
-            <h3 class= "quest_last">Your Last 3 Answers :</h3>
-            {% for myanswer in myanswers %}
-            <div class="user-answers">
-                <ul id="answers-list">
-                    <h4>{{myanswer.content}}</h3>
-                    <h6> {{myanswer.created_at}}</h3>
-                    <a href="{% url 'ask:question_detail' myanswer.question.id %}" class="btn-action">View Question</a>
-                    </ul>
-                </div>
-            </div>
-            {% endfor %}
-  
-</main>
-{% endif %}
-
-    {% endblock body %}
+  {% endblock body %}
