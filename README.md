@@ -46,16 +46,20 @@ To get a copy of the project up and running on your local machine, follow these 
    - On macOS/Linux:
          python3 -m venv env
          source env/bin/activate
-     - Install the project dependencies:
-         pip install -r requirements.txt
-4. Apply the database migrations:
+4. Install the project dependencies:
+     -
+    pip install -r requirements.txt
+     -
+        
+5. Apply the database migrations:
    python manage.py migrate
-5. Create a superuser to access the admin panel (optional but recommended):
+6. Create a superuser to access the admin panel (optional but recommended):
    python manage.py createsuperuser
 
-6. Run the development server:
-   python manage.py runserver
-7. Open your browser and navigate to:
+7. Run the development server:
+     -python manage.py runserver
+      
+8. Open your browser and navigate to:
    http://127.0.0.1:8000/
 
 
