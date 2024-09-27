@@ -1,19 +1,38 @@
 # Questify
-Questify is a Q&A platform that allows users to engage by asking and answering questions across various topics. The platform is built on a strong backend architecture to ensure scalability, security, and efficiency.
 
-Backend Highlights:
+**Questify** is a social media platform for questions and answers, where users can create groups, ask and answer questions, make friends, and chat. The platform allows users to engage in discussions, share knowledge, and connect with others. Built with Django using Function-Based Views (FBVs), the project offers a dynamic and user-friendly interface to facilitate communication and knowledge sharing.
 
-Django Framework: Utilizes Django, a high-level Python web framework, for backend management. It leverages Django's ORM for efficient database interactions.
-Secure Authentication: Implements secure user authentication using Django's built-in features like password hashing and CSRF protection.
-Scalable Architecture: Designed to handle growing user loads through Django's modular structure and caching integration.
-Database Management: Uses SQLite, a lightweight and self-contained database, to store user data, questions, and answers, with Django's ORM for efficient querying.
-Custom User Profiles: Each user has a personalized profile with secure storage and easy access to their data.
-Key Features:
+## Features
 
-Personalized profiles with an overview of user activity.
-Dropdown account menu with profile, login, and signup options.
-Responsive design using HTML and CSS, focused on simplicity.
-Technologies Used:
+- **Questions & Answers**: Users can ask and answer questions in various groups.
+- **Groups**: Create, edit, and delete groups to manage topics of interest.
+- **Friends**: Add friends, invite them to groups, and engage in private chats.
+- **Chat**: Direct messaging functionality to communicate with friends.
+- **Likes**: Like answers and questions to show support or appreciation.
+- **Authentication**: Secure login and signup system with user profile management.
+- **Profile Page**: Each user has a profile page displaying their activities, such as asked and answered questions.
+- **Success Messages**: Feedback messages for actions like profile updates, sending friend requests, and posting questions.
 
-Django: Backend logic and security.
-HTML & CSS: Clean frontend design.
+## Technologies Used
+
+- **Backend**: Django (Function-Based Views)
+- **Frontend**: HTML, CSS, Bootstrap
+- **Database**: SQLite (or any database supported by Django)
+- **Version Control**: Git & GitHub
+
+## Getting Started
+
+To get a copy of the project up and running on your local machine, follow these steps:
+
+### Prerequisites
+
+- Python 3.x
+- Django 4.x
+- Git
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/AhmedHashim04/Questify.git
+  
