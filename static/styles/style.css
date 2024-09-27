@@ -14,7 +14,6 @@
   --color-error: #ef476f; /* لون وردي داكن للحالات الفاشلة */
 }
 
-
 /*========== base styles ==========*/
 
 * {
@@ -67,7 +66,8 @@ a {
 .container {
   max-width: 120rem;
   width: 90%;
-  margin: auto;
+  margin: 0 auto;
+  padding: 0rem 1rem;
 }
 
 .btn {
@@ -337,6 +337,7 @@ a {
 @media screen and (max-width: 500px) {
   .header__search {
     display: none;
+    margin-bottom: 20px;
   }
 }
 
@@ -1163,4 +1164,391 @@ a {
   font-weight: 500;
   color: var(--color-main);
   font-weight: 1.4rem;
+}
+
+
+.notification-container {
+  position: relative;
+}
+
+.notification-button {
+  background-color: #007bff; /* لون الخلفية */
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 20px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.notification-button:hover {
+  background-color: #0056b3; /* لون الخلفية عند التمرير */
+}
+
+.notification-icon {
+  font-size: 24px; /* حجم الأيقونة */
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+mbody {
+  font-family: Arial, sans-serif;
+  background-color: #F5F5F5;
+}
+
+.containerm {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 25%;
+  background-color: #FFFFFF;
+  border-right: 1px solid #ECEFF1;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  color: #424242;
+}
+
+.friend {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.friend img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.friend span {
+  font-size: 16px;
+  color: #424242;
+}
+
+.status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #BDBDBD;
+  position: absolute;
+  right: 10px;
+}
+
+.unread {
+  background-color: #FF5252;
+}
+
+.chat-area {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #E1F5FE;
+  padding: 20px;
+}
+
+.messages {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.message {
+  margin-bottom: 15px;
+  max-width: 60%;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.user-message {
+  background-color: #E1F5FE;
+  align-self: flex-end;
+}
+
+.other-message {
+  background-color: #ECEFF1;
+  align-self: flex-start;
+}
+
+.message p {
+  margin-bottom: 5px;
+}
+
+.time {
+  font-size: 12px;
+  color: #9E9E9E;
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+}
+
+.input-area {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.input-area input {
+  flex-grow: 1;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 20px;
+  outline: none;
+  background-color: #F5F5F5;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.icons span {
+  font-size: 24px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.icons button {
+  padding: 8px 15px;
+  background-color: #29B6F6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* تنسيق الحاوية الرئيسية للنموذج */
+.search-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  background-color: var(--color-dark-light);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* تنسيق الحقل النصي للبحث */
+.search-input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--color-gray);
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-input::placeholder {
+  color: var(--color-gray);
+}
+
+.search-input:focus {
+  border-color: var(--color-main);
+}
+
+/* تنسيق عناصر التاريخ */
+.date-range {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 12px;
+  color: var(--color-dark-medium);
+}
+
+.date-range label {
+  margin-bottom: 4px;
+}
+
+.date-input {
+  padding: 6px;
+  border: 1px solid var(--color-gray);
+  border-radius: 5px;
+  font-size: 12px;
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.date-input:focus {
+  border-color: var(--color-main);
+}
+
+/* تنسيق الزر */
+.search-btn {
+  padding: 8px 16px;
+  background-color: var(--color-main);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+  background-color: var(--color-main-light);
+}
+
+/* إضافة بعض المساحة بين العناصر */
+.header__search {
+  margin-bottom: 20px;
+}
+
+
+
+/* Styling the message container */
+.message-container {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-width: 600px;
+  background-color: #f9f9f9;
+}
+
+/* Styling individual messages */
+.messages {
+  list-style-type: none;
+  padding: 0;
+}
+
+.messages li {
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  position: relative;
+}
+
+/* Styling for success, info, warning, error messages */
+.alert-success {
+  background-color: #d4edda00;
+  color: #155724;
+}
+
+.alert-info {
+  background-color: #d4edda00;
+  color: #004085;
+}
+
+.alert-warning {
+  background-color: #d4edda00;
+  color: #856404;
+}
+
+.alert-error {
+  background-color: #d4edda00;
+  color: #721c24;
+}
+
+/* Styling the close button */
+.close-btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+
+
+.toggle-button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.arrow {
+  font-size: 24px;
+  transition: transform 0.3s ease;
+}
+.arrow2 {
+  font-size: 24px;
+  transition: transform 0.3s ease;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
+.main-container {
+  width: 100%;
+  border: 2px solid rgb(94, 94, 94);
+  border-radius: 40px;
+  padding: 20px;
+  background: var(--color-dark-light);
+  color: var(--color-dark-light);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.answer-container {
+  width: 100%;
+  border: 2px solid rgb(94, 94, 94);
+  border-radius: 40px;
+  padding: 20px;
+  background: rgba(137, 142, 137, 0.351);
+  color: var(--color-dark);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.question-container {
+  width: 100%;
+  background: rgba(137, 142, 137, 0.351);
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.content-container {
+  border: 2px solid rgb(94, 94, 94);
+  border-radius: 20px;
+  padding: 15px;
+  background: rgba(137, 142, 137, 0.351);
+  color: var(--color-dark);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }

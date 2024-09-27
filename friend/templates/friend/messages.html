@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container" style="width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark-medium); color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+
+  <div class="containerm" style="display: flex;">
+
+    <!-- Sidebar -->
+    <div class="sidebar" style="width: 20%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark-light); color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+      <h2  style=" background: var(--color-dark-light); color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"class="activities__box">Friends</h2>
+      <hr>
+      <br>
+      {% for person in friends %}
+      <a class="friend" href="{% url 'friend:chat' person %}" style="display: flex; align-items: center; text-decoration: none; color: var(--color-main);">
+        <img src="avatar1.png" alt="Friend 1" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+        {{ person }}
+        <div class="status unread"></div>
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Chat Area -->
+    <div style="flex-grow: 1; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark-medium); color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);" class="chat-area">
+      <a href='{% url "accounts:profile" friend %}'>
+        <h3 style="width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark-light); color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);" class="activities__box">Chat with: <span>{{ friend.user.username }}</span></h3>
+      </a>
+      <hr>
+      <div class="messages" style="max-height: 80%; overflow-y: auto;">
+        <br>
+        {% for message in chat_messages %}
+        {% if message.from_user == request.user %}
+          <div style="color: red; text-align: right;" class="message user-message">
+            <p>{{ message.content }}</p>
+            <span class="time">{{ message.sended_time|timesince }}</span>
+          </div>
+        {% else %}
+          <div class="message other-message">
+            <p>{{ message.content }}</p>
+            <span class="time">{{ message.sended_time|timesince }}</span>
+          </div>
+        {% endif %}
+        {% endfor %}
+        <hr>
+      </div>
+      
+      <!-- Input Area -->
+      <hr >
+      <div class="input-area" style=" margin-top: 20px; display: flex; align-items: center; ">
+        <form action='{% url "friend:chat" friend.user.username %}' method="POST" style="flex-grow: 1; display: flex;">
+          {% csrf_token %}
+          <input name='content' type="text" placeholder="Type a message..." style=" flex-grow: 1; padding: 10px; border-radius: 10px; border: 1px solid rgb(222, 101, 101);">
+          <div class="icons" style="margin-left: 10px;">
+            <span style="cursor: pointer;">😊</span>
+            <span style="cursor: pointer;">📎</span>
+            <button type="submit" style="background: rgb(222, 101, 101); color: white; border: none; border-radius: 10px; padding: 10px; cursor: pointer;">Send</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock body %}

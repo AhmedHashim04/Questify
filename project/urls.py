@@ -18,14 +18,19 @@ from django.contrib import admin
 from django.urls import path,include
 from .views import handel404 , handel500
 
+from .notification_context import mark_notifications_as_read , delete_notification  , mark_notification_read
+
 urlpatterns = [
     path('accounts/', include('accounts.urls',namespace='accounts')),
-    path('ask/', include('ask.urls',namespace='ask')),
+    path('', include('ask.urls',namespace='ask')),
     path('admin/', admin.site.urls),
-    path('home/', include('home.urls',namespace='home')),
     path('group/', include('group.urls',namespace='group')),
     path('friend/', include('friend.urls',namespace='friend')),
     path('contact/', include('contact.urls',namespace='contact')),
+    path('notification/', mark_notifications_as_read, name='notification' ),
+    path('notification/<int:id>/delete', delete_notification, name='notification_button' ),
+    path('notification/<int:id>/read', mark_notification_read, name='notification_read' ),
+
 
     ]
 

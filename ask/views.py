@@ -2,48 +2,67 @@ from django.shortcuts import render , redirect ,get_object_or_404
 from django.urls import reverse
 from .form import AskForm , AnswerForm
 from django.contrib.auth.decorators import login_required
+from accounts.models import  Notification ,Profile
+from group.models import  Group
 from datetime import datetime
-# from django.http import JsonResponse
-from friend.models import Friend
+from django.db.models import Q
+from accounts.models import Profile
 from .models import Question , Answer 
+from taggit.models import Tag
+from django.contrib import messages
 
- 
-def question_list(request):
+
+@login_required
+def question_list(request,tag_slug=None):
         
     if request.method == 'POST':
-
+        tag = None
         search_info = request.POST
-        question_contain_word = search_info['search_txt']
-        search_from_time = search_info['from']
-        search_to_time = search_info['to']
-        
-        if not search_from_time and not search_to_time :
 
-            a = Question.objects.filter(group=None , content__icontains=question_contain_word   )
-            b = Question.objects.filter(group=None , title__icontains=question_contain_word   )
-            questions = a.union(b)
-            
-        elif search_from_time and not search_to_time  :
-            a = Question.objects.filter(group=None , content__icontains=question_contain_word,created_at__gte=(search_from_time))
-            b = Question.objects.filter(group=None , title__icontains=question_contain_word,created_at__gte=(search_from_time)   )
-            questions = a.union(b)
         
-        elif not search_from_time and search_to_time  :
-            a = Question.objects.filter(group=None , content__icontains=question_contain_word,created_at__lte=(search_to_time))
-            b = Question.objects.filter(group=None , title__icontains=question_contain_word,created_at__lte=(search_to_time)   )
-            questions = a.union(b)
+        question_contain_word = search_info.get('search_txt', '')
+        search_from_time = search_info.get('from', None)
+        search_to_time = search_info.get('to', None)
+        questions = Question.objects.filter(group=None)
+
+
         
-        else :
-            a = Question.objects.filter(group=None , content__icontains=question_contain_word,created_at__range=(search_from_time,search_to_time))
-            b = Question.objects.filter(group=None , title__icontains=question_contain_word,created_at__range=(search_from_time,search_to_time)   )
-            questions = a.union(b)
-            
-            
+        if question_contain_word:
+            questions = questions.filter(
+                Q(content__icontains=question_contain_word) |
+                Q(title__icontains=question_contain_word) 
+            )
+        
+        if search_from_time:
+            questions = questions.filter(created_at__gte=search_from_time)
+        
+        if search_to_time:
+            questions = questions.filter(created_at__lte=search_to_time)
+        
+
+
     else:
+        tag = None
+        if tag_slug:
+            tag = get_object_or_404(Tag, slug=tag_slug)
+            questions = Question.objects.filter(group=None,tags__in=[tag])
+        else:
             questions = Question.objects.filter(group=None)
-            my_friends = Friend.objects.filter(user=request.user,status="confirmed")
 
-    return render(request,'ask/questions.html',{"my_friends":my_friends,'questions':questions})
+        
+    groups = Group.objects.all()
+    profile   = Profile.objects.get( user = request.user )
+    myfriends = profile.confirmed_friend.all()
+    
+
+
+    return render(request,'ask/questions.html',
+        {
+        "my_friends": myfriends,
+        'questions':questions,
+        'groups':groups,
+        'tag':tag,
+        })
 
 
 @login_required
@@ -52,19 +71,25 @@ def question_detail(request, id):
 
     question = get_object_or_404(Question, pk=id)
     answers = Answer.objects.filter(question=question)
-    
-    if request.method == 'POST':
-        form = AnswerForm(request.POST)
-        if form.is_valid():
-            answer = form.save(commit=False)
-            answer.user = request.user
-            answer.question = question
-            answer.save()
-            return redirect('ask:question_detail', id=question.pk)
-    else:
-        form = AnswerForm()
 
-    return render(request, 'ask/question_detail.html', {'question': question,'answers': answers,'form': form})
+    if request.method == 'POST':
+        answer = Answer.objects.create(
+            user=request.user,
+            question=question,
+            content=request.POST['content']
+        )
+        if question.user != request.user :
+
+            notification = Notification.objects.create( from_user = request.user ,
+                                                    to_user = question.user ,
+                                                    content="question_answered")
+
+        messages.success(request, 'Answer submitted successfully!')
+
+        return redirect('ask:question_detail', id=question.pk)
+
+
+    return render(request, 'ask/question_detail.html', {'question': question,'answers': answers})
 
 @login_required
 def ask(request):
@@ -74,6 +99,7 @@ def ask(request):
             myform = form.save(commit=False)
             myform.user = request.user
             myform.save()
+            messages.success(request, 'Question submitted successfully!')
 
             return redirect(reverse('ask:question_list'))
     else:
@@ -89,9 +115,17 @@ def like(request, id ):
         question.like.remove(request.user)
     else :
         question.like.add(request.user)
+        if question.user != request.user :
+            notification = Notification.objects.create( from_user = request.user ,
+                                                    to_user = question.user ,
+                                                    content="question_liked")
+        messages.success(request, 'You liked the question!')
+        
 
-    return redirect(reverse('ask:question_detail', args=[question.id]))
-    # return redirect(reverse('ask:question_list'))
+
+    # return redirect(reverse('ask:question_detail', args=[question.id]))
+    return redirect(reverse('ask:question_list'))
+
 @login_required
 def like_answer(request, id , qid):
     # TODO: best Answer in the head of answers
@@ -103,6 +137,11 @@ def like_answer(request, id , qid):
         answer.like.remove(request.user)
     else :
         answer.like.add(request.user)
+        if answer.user != request.user :
+            notification = Notification.objects.create( from_user = request.user ,
+                                                    to_user = answer.user ,
+                                                    content="answer_liked")
+        messages.success(request, 'You liked the answer!')
 
     return redirect(reverse('ask:question_detail', args=[question.id]))
 
@@ -111,6 +150,8 @@ def delete_question(request, id):
     question = get_object_or_404(Question, id=id)
     if request.user == question.user :
         question.delete()
+        messages.success(request, 'You delete question!')
+
         return redirect('ask:question_list')
     return redirect('ask:question_detail', id=question.id)
 
@@ -129,6 +170,8 @@ def edit_question(request,id):
                 myform.last_edit = datetime.now()
                 myform.created_at = myform_created_at
                 myform.save()
+                messages.success(request, 'You edit question!')
+                
 
                 return redirect(('ask:question_detail'),id=question.id)
 

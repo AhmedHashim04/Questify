@@ -27,9 +27,7 @@
 
 
   <main class="auth layout">
-    <div class="container">
-      <div class="layout__box">
-        <div class="layout__boxHeader">
+        <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
           <div class="layout__boxTitle">
             <h3>Login</h3>
           </div>
@@ -56,7 +54,7 @@
     {% csrf_token %}
     {{form}}
     {% comment %} <input type="submit" value="login" class="btn btn--main" > {% endcomment %}
-
+      <br>   
     <button class="btn btn--main" type="submit">
       <svg
         version="1.1"

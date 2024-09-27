@@ -2,68 +2,87 @@
 {% block body %}
 
 <main class="layout layout--3">
-  <div class="container">
+  <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
 
 
 
-    <!-- Topics Start -->
-    <div class="topics">
-      <div class="topics__header">
-        <h2>Browse Topics</h2>
+    <!-- Groups Start -->
+    <div class="container" style="width: 100%; border: 2px solid rgb(94, 94, 94); border-radius: 40px; padding: 20px; background-color: var(--color-dark-medium); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+          <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background-color: var(--color-dark);:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+            <a style="padding: 10px 20px; background-color: #ff6b6b; color: var(--color-dark); border-radius: 10px; text-decoration: none; margin-bottom: 20px;" href='{% url "group:group_list" %}' class="roomListRoom__author" style="text-decoration: none; color: var(--color-dark-light);">
+              <h2>Quistify Groups </h2></a>
+            <div class="activities" style="text-align: center; margin-bottom: 20px;">
+              <button id="toggleGroupsBtn" class="toggle-button" style="display: block; margin: 0 auto 20px; padding: 10px; background-color: transparent; border: none; cursor: pointer; font-size: 18px; color: #ff6b6b;">
+                <span id="arrow " class="arrow2">New Groups</span>
+              </button>
+              <a class="btn btn--pill" href='{% url "group:add_group" %}'>
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                  <title>Create Question</title>
+                  <path
+                  d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+           
+          </div>
+
+    
+      <div id="groupsContainer" style="display: none; margin-top: 20px;">
+
+        {% for group in groups|slice:":5" %}
+
+        <!-- صندوق لكل مجموعة -->
+        <div class="container" style="width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 20px; padding: 15px; margin-bottom: 20px; background: var(--color-dark-medium); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+          
+          <!-- القائد والمعلومات الأساسية -->
+          <div class="activities__boxHeader" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <a href='{% url "group:group_detail" group.id %}' class="roomListRoom__author" style="font-weight: bold; text-decoration: none; color: #ff6b6b;">
+              @{{group.leader}}
+            </a>
+          </div>
+    
+          <!-- المحتوى الأساسي -->
+          <div class="activities__boxContent" style="padding: 10px; border: 1px solid rgb(222, 101, 101); border-radius: 10px; background: rgba(137, 142, 137, 0.351); color: var(--color-dark-light);">
+            <p style="margin: 0; font-size: 16px; color: #ff6b6b;">
+              “<a href='{% url "group:group_detail" group.id %}' style="text-decoration: none; color: #ff6b6b;">{{group.name}}</a>”
+            </p>
+          </div>
+        </div>
+        {% endfor %}
       </div>
-      <ul class="topics__list">
-        <li>
-          <a href="/" class="active">All <span>553</span></a>
-        </li>
-        <li>
-          <a href="/">Python <span>232</span></a>
-        </li>
-        <li>
-          <a href="/">JavaScript <span>122</span></a>
-        </li>
-        <li>
-          <a href="/">React <span>57</span></a>
-        </li>
-        <li>
-          <a href="/">Database <span>90</span></a>
-        </li>
-      </ul>
-      <a class="btn btn--link" href="topics.html">
-        More
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-          <title>chevron-down</title>
-          <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
-        </svg>
-      </a>
     </div>
-    <!-- Topics End -->
+    
+    
+    
+    <!-- Groups End -->
 
 
-    <!-- Room List Start -->
+    <!-- Question List Start -->
     <div class="roomList">
-      <div class="mobile-menu">
-       
-        <div class="mobile-menuItems">
-          <a class="btn btn--main btn--pill" href="#">Browse Topics</a>
-          <a class="btn btn--main btn--pill" href="#">Recent Activities</a>
-        </div>
-      </div>
-      
-      <div class="roomList__header">
-        <div>
+      <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+        <div class="roomList__header">
+
+          {% if tag %}
+
+          <h2>Questions in tag: {{tag}}</h2>
+          {% else %}
+
           <h2>Questions</h2>
-          <p>7,439 Questions available</p>
-        </div>
-        <a class="btn btn--main" href='{% url "ask:add_question" %}'>
+          {% endif %}
+
+        <p style="color:var(--color-gray); " >{{questions.count}} Questions available</p>
+        <a class="btn btn--pill" href='{% url "ask:add_question" %}'>
           <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-            <title>add</title>
+            <title>Create Question</title>
             <path
-              d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z"
+            d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z"
             ></path>
           </svg>
-          Create Question
         </a>
+      
       </div>
+      
       {% for question in questions %}
       <div class="roomListRoom">
         <div class="roomListRoom__header">
@@ -78,72 +97,115 @@
           </div>
         </div>
         <div class="roomListRoom__content">
-          <a href='{% url "ask:question_detail" question.id %}'>{{question.title}}</a>
-          <p>
+          <a target="_blank" href='{% url "ask:question_detail" question.id %}'>{{question.title}}</a>
+          <p style="color:var(--color-gray); " >
             {{question.content}}
           </p>
         </div>
+        {% if request.user in question.like.all %}
+
         <div class="roomListRoom__meta">
-          <a href='{% url "ask:question_like" question.id %}' class="roomListRoom__joined">
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-              <title>user-group</title>
-              <path
-              
-                d="M30.539 20.766c-2.69-1.547-5.75-2.427-8.92-2.662 0.649 0.291 1.303 0.575 1.918 0.928 0.715 0.412 1.288 1.005 1.71 1.694 1.507 0.419 2.956 1.003 4.298 1.774 0.281 0.162 0.456 0.487 0.456 0.85v4.65h-4v2h5c0.553 0 1-0.447 1-1v-5.65c0-1.077-0.56-2.067-1.461-2.584z"
-              ></path>
-              <path
-                d="M22.539 20.766c-6.295-3.619-14.783-3.619-21.078 0-0.901 0.519-1.461 1.508-1.461 2.584v5.65c0 0.553 0.447 1 1 1h22c0.553 0 1-0.447 1-1v-5.651c0-1.075-0.56-2.064-1.461-2.583zM22 28h-20v-4.65c0-0.362 0.175-0.688 0.457-0.85 5.691-3.271 13.394-3.271 19.086 0 0.282 0.162 0.457 0.487 0.457 0.849v4.651z"
-              ></path>
-              <path
-                d="M19.502 4.047c0.166-0.017 0.33-0.047 0.498-0.047 2.757 0 5 2.243 5 5s-2.243 5-5 5c-0.168 0-0.332-0.030-0.498-0.047-0.424 0.641-0.944 1.204-1.513 1.716 0.651 0.201 1.323 0.331 2.011 0.331 3.859 0 7-3.141 7-7s-3.141-7-7-7c-0.688 0-1.36 0.131-2.011 0.331 0.57 0.512 1.089 1.075 1.513 1.716z"
-              ></path>
-              <path
-                d="M12 16c3.859 0 7-3.141 7-7s-3.141-7-7-7c-3.859 0-7 3.141-7 7s3.141 7 7 7zM12 4c2.757 0 5 2.243 5 5s-2.243 5-5 5-5-2.243-5-5c0-2.757 2.243-5 5-5z"
-                ></path>
-              </svg>
-              {{question.like.count}} Like
-            </a>
-            <p class="roomListRoom__topic">Python</p>
+          <a  style="font-size: x-large;color:red " class="roomListRoom__joined" href="{% url 'ask:question_like' id=question.id %}"> ♥</a> 
+          <a style="font-size: x-small; margin-right:auto;" class="roomListRoom__joined" href="{% url 'ask:question_like' id=question.id %}">{{question.like.count}} Likes</a> 
+          {% for tag in question.tags.all %}
+          <a href="{% url 'ask:question_list_by_tag' tag.slug %}">
+            <p class="roomListRoom__topic">{{tag.name}}</p>
+          </a>
+          {% endfor %}         
+         </div>
+        </div>
+        {% else %}
+        <div class="roomListRoom__meta">
+          <a  style="font-size: x-large;color:thistle " class="roomListRoom__joined"  href="{% url 'ask:question_like' id=question.id %} " > ♥</a> 
+          <a style="font-size: x-small; margin-right:auto;" class="roomListRoom__joined" href="{% url 'ask:question_like' id=question.id %}">{{question.like.count}} Likes</a> 
+          {% for tag in question.tags.all %}
+          <a href="{% url 'ask:question_list_by_tag' tag.slug %}">
+            <p class="roomListRoom__topic">{{tag.name}}</p>
+          </a>
+          {% endfor %}
           </div>
         </div>
+        {% endif %}
+
       {% endfor %}
       
     </div>
-    <!-- Room List End -->
-
-    <!-- Activities Start -->
-    <div class="activities">
-      
-      <div class="activities__header">
-        <h2>My Friends</h2>
-      </div>
-
-      {% for friend in my_friends  %}
-      <div class="activities__box">
-        
-        <div class="activities__boxHeader roomListRoom__header">
-
-          <a href='{% url "accounts:profile" friend.friend %}' class="roomListRoom__author">
-            <div class="avatar avatar--small">
-              <img src="https://randomuser.me/api/portraits/women/11.jpg" />
-            </div>
-            <p>
-              {{friend.friend.username}}
-              <span>{{friend.first_name}} {{friend.last_name}}</span>
-            </p>
-          </a>
-          
-        </div>
-        
-      </div>
-      {% endfor %}
-      
-      
-      
     </div>
-    <!-- Activities End -->
+    <!-- Question List End -->
+
+<!-- Friends Start -->
+<div class="container" style=" width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark-medium); color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+  
+  <div class="activities-content">
+    <div class="toggle-button" id="toggleButton"><span class="arrow">▼</span><h2 >My Friends</h2></div>
   </div>
+  <div class="activities-content" id="activitiesContent" style="display: none;">
+    <hr>
+    {% for friend in my_friends %}
+    <div class="activities__boxHeader roomListRoom__header" style="margin-top: 10px; border: 2px solid var(--color-dark); border-radius: 40px; padding: 20px; background: var(--color-dark-light); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+    <div class="activities__boxHeader roomListRoom__header" style="margin-top: 10px; border: 2px solid var(--color-dark); border-radius: 40px; padding: 20px; background: var(--color-dark-light); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+        <a href='{% url "accounts:profile" friend %}' class="roomListRoom__author">
+          <div class="avatar avatar--small">
+            <img src="static/assets/avatar.svg" />
+          </div>
+          <p>{{friend.username}}<span>{{friend.first_name}} {{friend.last_name}}</span></p>
+        </div>
+        <div class="activities__boxHeader roomListRoom__header" style="margin-top: 10px; border: 2px solid var(--color-dark); border-radius: 40px; padding: 20px; background: var(--color-dark-light); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
 
+        <a href="{% url 'friend:chat' friend %}">֍</a>
+      </a>
+    </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+</div>
+<!-- Friends End -->
+
+
+
+</div>
 </main>
+
+<script>
+  const toggleButton = document.getElementById('toggleButton');
+  const activitiesContent = document.getElementById('activitiesContent');
+  const arrow = document.querySelector('.arrow');
+  
+  const toggleBtn = document.getElementById('toggleGroupsBtn');
+  const groupsContainer = document.getElementById('groupsContainer');
+  const arrow2 = document.getElementById('arrow2');
+  
+  // تهيئة حالة العرض الافتراضية
+  activitiesContent.style.display = 'none'; // تأكد من أن محتوى الأنشطة مخفي افتراضيًا
+  groupsContainer.style.display = 'none'; // تأكد من أن حاوية المجموعات مخفية افتراضيًا
+  
+  toggleButton.addEventListener('click', () => {
+    // تغيير حالة العرض لمحتوى الأنشطة
+    if (activitiesContent.style.display === 'none') {
+      activitiesContent.style.display = 'block';
+      arrow.classList.add('rotate'); // إضافة الكلاس للدوران
+    } else {
+      activitiesContent.style.display = 'none';
+      arrow.classList.remove('rotate'); // إزالة الكلاس للدوران
+    }
+  });
+  
+  toggleBtn.addEventListener('click', () => {
+    // تغيير حالة العرض لحاوية المجموعات
+    if (groupsContainer.style.display === 'none') {
+      groupsContainer.style.display = 'block';
+      arrow2.classList.add('rotate'); // إضافة الكلاس للدوران
+
+    } else {
+      groupsContainer.style.display = 'none';
+      arrow2.classList.remove('rotate'); // إزالة الكلاس للدوران
+
+    }
+  });
+  
+</script>
+
+{% comment %} var(--color-dark-medium) {% endcomment %}
 
 {% endblock body %}

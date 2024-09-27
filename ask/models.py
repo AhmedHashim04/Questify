@@ -1,18 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-from group.models import Group 
-
+from group.models import Group
+from taggit.managers import TaggableManager
 # Create your models here.
 class Question(models.Model):
-    title      = models.CharField(max_length=1000 , unique=True )
-    content    = models.TextField(max_length=40000, blank=True  )
-    rating     = models.IntegerField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now=True,auto_created=True,null=True, blank=True,)
-    last_edit  = models.DateTimeField(auto_created=True,null=True, blank=True)
-    user       = models.ForeignKey(User,on_delete=models.CASCADE,related_name="Question_user")
-    like       = models.ManyToManyField(User , blank=True ,related_name="Question_like")
-    group      = models.ForeignKey(Group ,on_delete=models.CASCADE, blank=True ,null=True,related_name="group_question")
+    title            = models.CharField(max_length=1000 , unique=True )
+    content          = models.TextField(max_length=40000, blank=True  )
+    rating           = models.IntegerField(null=True, blank=True)
+    created_at       = models.DateTimeField(auto_now=True,auto_created=True,null=True, blank=True,)
+    last_edit        = models.DateTimeField(auto_created=True,null=True, blank=True)
+    user             = models.ForeignKey(User,on_delete=models.CASCADE,related_name="Question_user")
+    like             = models.ManyToManyField(User , blank=True ,related_name="Question_like")
+    group            = models.ForeignKey(Group ,on_delete=models.CASCADE, blank=True ,null=True,related_name="group_question")
+    tags             = TaggableManager(blank=True)
 
     class Meta:
         ordering  = ['-created_at']

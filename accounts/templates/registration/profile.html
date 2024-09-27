@@ -2,66 +2,85 @@
 
 {% block body %}
   <main class="profile-page layout layout--3">
-    <div class="container">
-      <!-- Topics Start -->
-      <div class="topics">
-        <div class="topics__header">
-          <h2>Browse Topics</h2>
-        </div>
-        <ul class="topics__list">
-          <li>
-            <a href="/" class="active">All <span>553</span></a>
-          </li>
-          <li>
-            <a href="/">Python <span>232</span></a>
-          </li>
-          <li>
-            <a href="/">JavaScript <span>122</span></a>
-          </li>
-          <li>
-            <a href="/">React <span>57</span></a>
-          </li>
-          <li>
-            <a href="/">Database <span>90</span></a>
-          </li>
-        </ul>
-        <button class="btn btn--link" href="/">
-          More
-          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-            <title>chevron-down</title>
-            <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
-          </svg>
-        </button>
-      </div>
-      <!-- Topics End -->
+    <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
 
-      <!-- Room List Start -->
+    <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+      <!-- Answers Start -->
+      
+      <div class="container main-container">
+
+        <div class="activities__header">
+            <h2> Last 3 Answers</h2>
+        </div>
+
+        {% for answer in answers|slice:":3" %}
+            <div class="container question-container">
+                <p>Question: 
+                    <a href='{% url "ask:question_detail" answer.question.id %}'>
+                        {{answer.question.title|truncatechars:15}}
+                    </a>
+                  </p>
+                </div>
+                
+                <br>
+                {% endfor %}
+              </div>
+              </div>
+
+              
+
+        
+      <!-- Answers End -->
+
+      <!-- Info Start -->
       <div class="roomList">
-        <div class="profile">
+
+        <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+
+          <div class="profile">
+            <h1> {{questions.count}} Questions ,  {{answers.count}} Answers </h1> 
           <div class="profile__avatar">
             <div class="avatar avatar--large active">
-              <img src="https://randomuser.me/api/portraits/men/11.jpg" />
+              
+              {% if profile.image %}
+              <img src="{{profile.image.url}}" />
+                {% else %}
+                <img src="static/assets/avatar.svg" />
+                {% endif %}
+              
             </div>
           </div>
           <div class="profile__info">
             <h3>{{profile.user.first_name}} {{profile.user.last_name}}</h3>
             <p>@{{profile.user}}</p>
-
             {% if my_user == profile.user %}
             <a href='{% url "accounts:profile_edit" profile.slug %}' class="btn btn--main btn--pill">Edit Profile</a>
             {% else %}
 
-              {% if not is_friend %}
-              <a href='{% url "friend:add_friend" profile.user.id %}' class="btn btn--main btn--pill">Add Friend</a>
-              {% elif is_friend.status == "waiting" %}
-              <a href='{% url "friend:add_friend" profile.user.id %}' class="btn btn--main btn--pill">Cancel Request</a>
-              {% elif is_friend.status == "confirmed" %}
-              <a href='{% url "friend:add_friend" profile.user.id %}' class="btn btn--main btn--pill">Remove Friend</a>
-              {% endif %}
+                  {% if friending_status == 'not_sended' %}
+                  <a href='{% url "friend:add_friend" profile.slug %}' class="btn btn--main btn--pill">Add Friend</a>
+                  {% comment %} <a href='{% url "friend:add_friend" %}' class="btn btn--main btn--pill">Add Friend</a> {% endcomment %}
+
+                  {% elif friending_status == "waiting" %}
+                  {% comment %} <a href='{% url "friend:add_friend" friend_slug %}' class="btn btn--main btn--pill">Cancel Request</a> {% endcomment %}
+                  <a href='{% url "friend:add_friend" profile.slug %}' class="btn btn--main btn--pill">Cancel Request</a>
+                  
+                  {% elif friending_status == "confirmed" %}
+                  <a href='{% url "friend:un_friend" profile.slug %}' class="btn btn--main">Remove Friend</a>
+                  <br>
+                  <br>
+                  <a href="{% url 'friend:chat' profile %}" class="btn btn--main btn--pill" >֍Chat</a>
+
+
+                  {% endif %}
+                  
             {% endif %}
+
             </div>
-          <div class="profile__about">
-            <h3>About</h3>
+            <br>
+
+            <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+              <h3>About</h3>
             <p>
               {% if profile.bio %}
               Bio : {{profile.bio}}
@@ -83,13 +102,9 @@
           </div>
         </div>
 
-        <div class="roomList__header">
-          <div>
-            <h2>Last Questions From {{profile.user.first_name}} . </a>
-            </h2>
-          </div>
-        </div>
-        
+
+        <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+
         {% for question in questions  %}
           
           
@@ -113,102 +128,129 @@
             </p>
           </div>
           <div class="roomListRoom__meta">
-            <a class="roomListRoom__joined">
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                <title>user-group</title>
-                <path
-                  d="M30.539 20.766c-2.69-1.547-5.75-2.427-8.92-2.662 0.649 0.291 1.303 0.575 1.918 0.928 0.715 0.412 1.288 1.005 1.71 1.694 1.507 0.419 2.956 1.003 4.298 1.774 0.281 0.162 0.456 0.487 0.456 0.85v4.65h-4v2h5c0.553 0 1-0.447 1-1v-5.65c0-1.077-0.56-2.067-1.461-2.584z">
-                </path>
-                <path
-                  d="M22.539 20.766c-6.295-3.619-14.783-3.619-21.078 0-0.901 0.519-1.461 1.508-1.461 2.584v5.65c0 0.553 0.447 1 1 1h22c0.553 0 1-0.447 1-1v-5.651c0-1.075-0.56-2.064-1.461-2.583zM22 28h-20v-4.65c0-0.362 0.175-0.688 0.457-0.85 5.691-3.271 13.394-3.271 19.086 0 0.282 0.162 0.457 0.487 0.457 0.849v4.651z">
-                </path>
-                <path
-                  d="M19.502 4.047c0.166-0.017 0.33-0.047 0.498-0.047 2.757 0 5 2.243 5 5s-2.243 5-5 5c-0.168 0-0.332-0.030-0.498-0.047-0.424 0.641-0.944 1.204-1.513 1.716 0.651 0.201 1.323 0.331 2.011 0.331 3.859 0 7-3.141 7-7s-3.141-7-7-7c-0.688 0-1.36 0.131-2.011 0.331 0.57 0.512 1.089 1.075 1.513 1.716z">
-                </path>
-                <path
-                  d="M12 16c3.859 0 7-3.141 7-7s-3.141-7-7-7c-3.859 0-7 3.141-7 7s3.141 7 7 7zM12 4c2.757 0 5 2.243 5 5s-2.243 5-5 5-5-2.243-5-5c0-2.757 2.243-5 5-5z">
-                </path>
-              </svg>
-              5.3k Joined
-            </a>
-            <p class="roomListRoom__topic">Python</p>
-          </div>
-        </div>
-        {% endfor %}
 
-      </div>
-      <!-- Room List End -->
+            
+            {% if request.user in question.like.all %}
+                  
+            <div class="thread__delete">
 
-      <!-- Activities Start -->
-      <div class="activities">
-
-        <div class="activities__header">
-          <h2>My Groups</h2>
-        </div>
-        {% for group in mygroups  %}
-        <div class="activities__box">
-          <div class="activities__boxHeader roomListRoom__header">
-            <a href='{% url "group:group_detail" group.id %}' class="roomListRoom__author">
-              <div class="avatar avatar--small">
-                <img src="https://randomuser.me/api/portraits/women/11.jpg" />
-              </div>
-              <p>
-                @{{group.leader}}
-                <span>{{group.created_at|timesince}}</span>
-              </p>
-            </a>
-            <div class="roomListRoom__actions">
-              {% comment %} <a href="#">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                  <title>delete</title>
-                  <path
-                    d="M30 4h-8v-3c0-0.553-0.447-1-1-1h-10c-0.553 0-1 0.447-1 1v3h-8v2h2v24c0 1.104 0.897 2 2 2h20c1.103 0 2-0.896 2-2v-24h2v-2h-0zM12 2h8v2h-8v-2zM26.002 30l-0.002 1v-1h-20v-24h20v24h0.002z">
-                  </path>
-                </svg>
-              </a> {% endcomment %}
+              <a style="font-size: x-large;" href="{% url 'ask:question_like' id=question.id %}"> ♥</a> 
+              <a style="font-size: small;" href="{% url 'ask:question_like' id=question.id %}">{{question.like.count}}</a> 
             </div>
+            
+            {% else %}
+            
+          <div class="thread__delete">
+            <a  style="font-size: x-large;color:thistle " href="{% url 'ask:question_like' id=question.id %}"> ♥</a> 
+            <a style="font-size: small;" href="{% url 'ask:question_like' id=question.id %}">{{question.like.count}}</a> 
           </div>
-          <div class="activities__boxContent">
-            <p>“<a href='{% url "group:group_detail" group.id %}'>{{group.name}}</a>”</p>
-            <div class="activities__boxRoomContent">
-              {{group.bio}}
-            </div>
-          </div>
-        </div>          
-        {% endfor %}
-
-        <div class="activities__header">
-          <h2>My Last 3 Answers</h2>
-        </div>
-
-        {% for answer in answers  %}
-
-        <div class="activities__box">
-          <div class="activities__boxHeader roomListRoom__header">
-            <a href='{% url "ask:question_detail" answer.question.id %}' class="roomListRoom__author">
-              <div class="avatar avatar--small">
-                <img src="https://randomuser.me/api/portraits/women/11.jpg" />
-              </div>
-              <p>
-                @{{answer.user}}
-                <span>{{answer.created_at|timesince}}</span>
-              </p>
-            </a>
-
-          </div>
+                
+              {% endif %}
           
-          <div class="activities__boxContent">
-            <p>replied to question“<a href='{% url "ask:question_detail" answer.question.id %}'>{{answer.question.title|truncatechars:10}}</a>”</p>
-            <div class="activities__boxRoomContent">
-              {{answer.question.content|truncatewords:4}}
-            </div>
+
           </div>
-        </div>          
-        
+        </div>
         {% endfor %}
+
+      </div>  
+      </div>  
+      </div>  
+      <!-- Info List End -->
+
+      <!-- Friend & Groups Start -->
+      <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+      <div class="container" style=" width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark-medium); color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+
+          <div class="activities-content">
+            <div class="toggle-button" id="toggleButton2"><span class="arrow2">▼</span><h2 >Friends</h2></div>
+          </div>
+          <div class="activities-content" id="activitiesContent2" style="display: none;">
+
+            {% for friend in friends %}
+            <div class="activities__boxHeader roomListRoom__header" style="margin-top: px; border: 1px solid var(--color-dark); border-radius: 40px; padding: 10px; background: var(--color-dark-medium); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                 <a href='{% url "accounts:profile" friend %}' class="roomListRoom__author">{{friend}}</a>                
+            </div>
+                {% endfor %}
+          </div>
       </div>
-      <!-- Activities End -->
+        <br>
+        <br>
+        <br>
+        <div class="activities-content" style="margin-top: px; border: 1px solid var(--color-dark); border-radius: 40px; padding: 10px; background: var(--color-dark-medium); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+
+          <div class="toggle-button" id="toggleButton">
+            <span class="arrow">▼</span><h2 >Groups</h2>
+          
+          </div>
+        </div>
+        <div class="activities-content" id="activitiesContent" style="display: none;">
+          {% for group in mygroups %}
+          <div class="activities__boxHeader roomListRoom__header" style="margin-top: 10px; border: 2px solid var(--color-dark-medium); border-radius: 40px; padding: 20px; background: var(--color-dark-light); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+          <div class="activities__boxHeader roomListRoom__header">
+              <a href='{% url "group:group_detail" group.id %}' class="roomListRoom__author">
+                <p>{{group.name}}</span></p>
+              </div>
+            </a>
+
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      
+      </div>
     </div>
+    
+      <!-- Activities End -->
+      
+    </div>
+
   </main>
 
+
+  <script>
+    const toggleButton = document.getElementById('toggleButton');
+    const activitiesContent = document.getElementById('activitiesContent');
+    const arrow = document.querySelector('.arrow');
+
+    const toggleButton2 = document.getElementById('toggleButton2');
+    const activitiesContent2 = document.getElementById('activitiesContent2');
+    const arrow2 = document.querySelector('.arrow2');
+    
+    // تهيئة حالة العرض الافتراضية
+    activitiesContent.style.display = 'none'; // تأكد من أن محتوى الأنشطة مخفي افتراضيًا
+    
+    toggleButton.addEventListener('click', () => {
+      // تغيير حالة العرض لمحتوى الأنشطة
+      if (activitiesContent.style.display === 'none') {
+        activitiesContent.style.display = 'block';
+        arrow.classList.add('rotate'); // إضافة الكلاس للدوران
+      } else {
+        activitiesContent.style.display = 'none';
+        arrow.classList.remove('rotate'); // إزالة الكلاس للدوران
+      }
+    });
+
+    
+    activitiesContent2.style.display = 'none'; // تأكد من أن محتوى الأنشطة مخفي افتراضيًا
+    
+    toggleButton2.addEventListener('click', () => {
+      // تغيير حالة العرض لمحتوى الأنشطة
+      if (activitiesContent2.style.display === 'none') {
+        activitiesContent2.style.display = 'block';
+        arrow2.classList.add('rotate'); // إضافة الكلاس للدوران
+      } else {
+        activitiesContent2.style.display = 'none';
+        arrow2.classList.remove('rotate'); // إزالة الكلاس للدوران
+      }
+    });
+    
+    
+  </script>
+
+
   {% endblock body %}
+
+
+
+
+

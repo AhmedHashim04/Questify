@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+
+<main style="max-width: 100%;" class="create-room layout">
+  
+    <div style="max-width: 100%;" class="container">
+      <div class="container" style=" width: 100%;  border: 2px solid rgb(222, 101, 101);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+        <div style="max-width: 100%;" class="layout__boxHeader">
+          <div class="layout__boxTitle">
+            <a href="/">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                <title>arrow-left</title>
+                <path
+                  d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z"
+                ></path>
+              </svg>
+            </a>
+            <h3>Notifications</h3>
+          </div>
+
+
+
+          <form style="width: 100%;" action="{% url 'notification' %}" method="post">
+            {% csrf_token %}              
+              <button style="margin-left: 80%;" class="btn btn--main" type="submit">Mark All Read</button>
+          </form>
+
+
+
+        </div>
+
+
+        <div class="topics-page layout__body">
+          
+          
+          <span style=" width: 100%;  border: 2px solid rgb(222, 101, 101);  border-radius: 40px; padding: 20px; background:var(--color-gray); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);" >Not Readed </span>
+          
+          <div class="container" style=" width: 100%;  border: 2px solid rgb(222, 101, 101);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+            
+            {% for notification in not_read_notifications %}
+            <br>
+            
+            
+            <div class="container" style=" width: 100%;  border: 2px solid rgb(222, 101, 101);  border-radius: 40px; padding: 20px; background:var(--color-dark-light);color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+              
+              <div class="activities__boxHeader roomListRoom__header">
+      
+      
+                <a href='{% url "accounts:profile" notification.from_user  %}' class="roomListRoom__author">
+                  <div class="avatar avatar--small">
+                    <img src="static/assets/avatar.svg" />
+                  </div>
+                    
+                {% if notification.content == 'friend_request' %} 
+                      <p>
+                        {{notification.from_user}}
+                        <span>want to be came friends</span>
+                      </p>
+                    </a>  
+
+                    <a href="{% url 'friend:accept_friend' notification.from_user %}" style="margin-left: 35%;" class="btn btn--pill">Accept</a>
+                    <form style="margin-left: 1%;" action="{% url 'notification_read' notification.id %}" method="post">{% csrf_token %}<button  class="btn btn--dark-light" type="submit">✔️</button></form> 
+                    <a  style="margin-left: 1%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+                  
+                  </div>
+                </div>
+                {% elif notification.content == 'friend_accepted' %} 
+
+              
+                      <p>
+                        {{notification.from_user}}
+                        <span> starting new friendship with you ! </span>
+                      </p>
+                    </a>
+
+                    <form style="margin-left: 50%;" action="{% url 'notification_read' notification.id %}" method="post">{% csrf_token %}<button  class="btn btn--dark-light" type="submit">✔️</button></form> 
+                    <a  style="margin-left: 1%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+                  
+                  </div>
+
+                </div>
+                {% elif notification.content == 'friend_message' %} 
+
+              
+                      <p>
+                        {{notification.from_user}} <span> send a message ! </span>
+                      </p>
+                    </a>
+                    <a style="margin-left: 40%;" href="{% url 'friend:chat' notification.from_user %}" class="btn btn--main btn--pill" > ֍Chat</a>
+                    <form style="margin-left: 1%;" action="{% url 'notification_read' notification.id %}" method="post">{% csrf_token %}<button  class="btn btn--dark-light" type="submit">✔️</button></form> 
+                    <a  style="margin-left: 1%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+                  
+                  </div>
+
+                </div>
+                {% elif notification.content == 'group_joined' %} 
+
+                      <p>
+                        {{notification.from_user}}
+                        <span>Joined Your Group !</span>
+                      </p>
+                    </a>
+                    <form style="margin-left: 58%;" action="{% url 'notification_read' notification.id %}" method="post">{% csrf_token %}<button  class="btn btn--dark-light" type="submit">✔️</button></form> 
+                    <a  style="margin-left: 1%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+                  
+                  
+                  </div>
+
+                </div>
+                {% elif notification.content == 'question_answered' %} 
+              
+                      <p>
+                        <span>Answer your Question  !</span>
+                      </p>
+                    </a>
+                  
+                    <form style="margin-left: 58%;" action="{% url 'notification_read' notification.id %}" method="post">{% csrf_token %}<button  class="btn btn--dark-light" type="submit">✔️</button></form> 
+                    <a  style="margin-left: 1%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+                  
+                  </div>
+
+                </div>
+                {% elif notification.content == 'question_liked' %} 
+                      <p>
+                        {{notification.from_user}}
+                        <span>Love your Question  !</span>
+                      </p>
+
+                    </a>
+                  
+                  
+                    <form style="margin-left: 58%;" action="{% url 'notification_read' notification.id %}" method="post">{% csrf_token %}<button  class="btn btn--dark-light" type="submit">✔️</button></form> 
+                    <a  style="margin-left: 1%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+                  
+                  </div>
+
+                </div>
+                {% elif notification.content == 'answer_liked' %} 
+              
+                    <form style="margin-left: 58%;" action="{% url 'notification_read' notification.id %}" method="post">{% csrf_token %}<button  class="btn btn--dark-light" type="submit">✔️</button></form> 
+                    <a  style="margin-left: 1%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+              
+              
+                  </div>
+                  
+                </div>
+                {% endif %}
+
+                {% endfor %}
+              </div>
+            
+          
+          
+              <br>
+  
+
+    
+<button id="toggleButton" style="margin-bottom: 10px;" class="btn btn--pill" onclick="toggleNotReaded()">Show Readed </button>
+      <div id="notReadedSection" style="display:none;">
+
+        <div class="container" style=" width: 100%;  border: 2px solid rgb(222, 101, 101);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+            
+            {% for notification in my_notifications %}
+            <br>
+            
+            
+            <div class="container" style=" width: 100%;  border: 2px solid rgb(222, 101, 101);  border-radius: 40px; padding: 20px; background:var(--color-dark-light);color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+              
+              <div class="activities__boxHeader roomListRoom__header">
+      
+      
+                <a href='{% url "accounts:profile" notification.from_user  %}' class="roomListRoom__author">
+                  <div class="avatar avatar--small">
+                    <img src="static/assets/avatar.svg" />
+                  </div>
+                    
+                {% if notification.content == 'friend_request' %} 
+                      <p>
+                        {{notification.from_user}}
+                        <span>want to be came friends</span>
+                      </p>
+                    </a>  
+
+                    <a href="{% url 'friend:accept_friend' notification.from_user %}" style="margin-left: 58%;" class="btn btn--pill">Accept</a>
+                    <a  style="margin-left: 1%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+                  
+                  </div>
+                </div>
+                {% elif notification.content == 'friend_accepted' %} 
+
+              
+                      <p>
+                        {{notification.from_user}}
+                        <span> starting new friendship with you ! </span>
+                      </p>
+                    </a>
+
+                    <a  style="margin-left: 58%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+
+                  
+                  </div>
+
+                </div>
+                {% elif notification.content == 'friend_message' %} 
+
+              
+                      <p>
+                        {{notification.from_user}} 
+                        <span> send a message ! </span>
+                      </p>
+                    </a>
+                    <a style="margin-left: 63%;" href="{% url 'friend:chat' notification.from_user %}" class="btn btn--main btn--pill" > ֍Chat</a>
+                    <a  style="margin-left: 1%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+                  
+                  </div>
+
+                </div>
+                {% elif notification.content == 'group_joined' %} 
+
+                      <p>
+                        {{notification.from_user}}
+                        <span>Joined Your Group !</span>
+                      </p>
+                    </a>
+
+                    <a  style="margin-left: 58%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+
+                  
+                  </div>
+
+                </div>
+                {% elif notification.content == 'question_answered' %} 
+              
+                      <p>
+                        {{notification.from_user}}
+
+                        <span>Answer your Question  !</span>
+                      </p>
+                    </a>
+
+                    <a  style="margin-left: 58%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+
+                  
+                  </div>
+
+                </div>
+                {% elif notification.content == 'question_liked' %} 
+                      <p>
+                        {{notification.from_user}}
+                        <span>Love your Question  !</span>
+                      </p>
+                    </a>
+                    
+                    <a  style="margin-left: 58%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+                    
+                    
+                  </div>
+                </div>
+                {% elif notification.content == 'answer_liked' %} 
+                
+                <p>
+                  {{notification.from_user}}
+                  <span>Love your ِAnswer  !</span>
+                  </p>
+                </a>
+                    
+                      <a  style="margin-left: 58%;" href="{% url 'notification_button' notification.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>remove</title><path  d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path></svg></a>
+                    
+                    
+                     </div>
+                </div>
+                {% endif %}
+
+                {% endfor %}
+            
+          </div>
+
+
+        </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+  function toggleNotReaded() {
+    var section = document.getElementById("notReadedSection");
+    var button = document.getElementById("toggleButton");
+  
+    if (section.style.display === "none") {
+      section.style.display = "block";
+      button.innerText = "Hide Readed";
+    } else {
+      section.style.display = "none";
+      button.innerText = "Show Readed";
+    }
+  }
+  </script>
+
+{% endblock body %}  
+
+
+
+
+
+
+
+

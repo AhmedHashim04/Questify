@@ -6,7 +6,7 @@
       <div class="room">
         <div class="room__top">
           <div class="room__topLeft">
-            <a href="index.html">
+            <a href="{{request.META.HTTP_REFERER}}">
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                 <title>arrow-left</title>
                 <path
@@ -67,9 +67,10 @@
             </div>
             <div class="room__hosted">
               <p>Created By</p>
-              <a href="#" class="room__author">
+              <a href="{% url 'accounts:profile' question.user %}" class="room__author">
+
                 <div class="avatar avatar--small">
-                  <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+                  <img src="static/assets/avatar.svg" />
                 </div>
                 <span>@{{question.user}}</span>
               </a>
@@ -78,60 +79,80 @@
               {{question.content}}
             </div>
             
-            <span class="room__topics">JavaScript</span>
+            {% if request.user in question.like.all %}
+                  
+            <div class="thread__delete">
+                 
+              <a style="font-size: x-large;" href="{% url 'ask:question_like' id=question.id %}"> ♥</a> 
+              <a style="font-size: small;" href="{% url 'ask:question_like' id=question.id %}">{{question.like.count}}</a> 
+            </div>
+            
+            {% else %}
+            
+          <div class="thread__delete">
+            <a  style="font-size: x-large;color:thistle " href="{% url 'ask:question_like' id=question.id %}"> ♥</a> 
+            <a style="font-size: small;" href="{% url 'ask:question_like' id=question.id %}">{{question.like.count}}</a> 
+          </div>
+                
+              {% endif %}
           </div>
 
 
 
             <div class="room__message">
-                <form action="" method="POST">
+                <form action='{% url "ask:question_detail" question.id %}' method="POST">
                   {% csrf_token %}
-                  <input name="body" placeholder="Write your message here..." />
+                  <input name="content" placeholder="Write your answer here..." />
                 </form>
               </div>
 
 
-          <form method="post">
-                {% csrf_token %}
-                <label for="answer">Add Your Answer:</label>
-                
-                <button type="submit">Submit</button>
-            </form> 
 
 
 
           <div class="room__conversation">
-
-            
-
-
             <div class="threads scroll">
                 
                 {% for answer in answers %}
                     
-                    
-              <div class="thread">
-                <div class="thread__top">
+                    <br>
+                <div class="container" style=" width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark); color: var(--color-); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                  <div class="thread__top">
                   <div class="thread__author">
-                    <a href="#" class="thread__authorInfo">
+                    {% comment %} <div class="container" style=" width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark); color: var(--color-); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"> {% endcomment %}
+
+                    <a href="{% url 'accounts:profile' answer.user %}" class="thread__authorInfo">
                       <div class="avatar avatar--small">
-                        <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+                        <img src="static/assets/avatar.svg" />
                       </div>
                       <span>@{{answer.user}}</span>
                     </a>
                     <span class="thread__date">{{answer.created_at|timesince}}</span>
                   </div>
-                  <div class="thread__delete">
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                      <title>remove</title>
-                      <path
-                        d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"
-                      ></path>
-                    </svg>
-                  </div>
+                  
+                  
+                  {% if request.user in answer.like.all %}
+                  
+                <div class="thread__delete">
+                     
+                  <a style="font-size: x-large;" href="{% url 'ask:like_answer' qid=question.id id=answer.id %}"> ♥</a> 
+                  <a style="font-size: small;" href="{% url 'ask:like_answer' qid=question.id id=answer.id %}">{{answer.like.count}}</a> 
                 </div>
-                <div class="thread__details">
-                {{answer.content}}
+                
+                {% else %}
+                
+              <div class="thread__delete">
+                <a  style="font-size: x-large;color:thistle " href="{% url 'ask:like_answer' qid=question.id id=answer.id %}"> ♥</a> 
+                <a style="font-size: small;" href="{% url 'ask:like_answer' qid=question.id id=answer.id %}">{{answer.like.count}}</a> 
+              </div>
+                    
+                  {% endif %}
+                  
+                  
+                </div>
+                <div style="color:var(--color-gray);" class="thread__details">
+                  <br>
+                  {{answer.content}}
                 </div>
               </div>
               {% endfor %}
@@ -146,161 +167,22 @@
 
       <!--   Start -->
       <div class="participants">
-        <h3 class="participants__top">Participants <span>(5.3k Joined)</span></h3>
+        <h3 class="participants__top">Participants <span>({{question.like.count}} Likes)/({{answers.count}} answers)</span></h3>
         <div class="participants__list scroll">
-          <a href="profile.html" class="participant">
+          
+          {% for member in question.like.all %}
+            
+          
+          <a href="{% url 'accounts:profile' member %}" class="participant">
             <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+              <img src="static/assets/avatar.svg" />
             </div>
             <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
+              {{member.first_name}} {{member.last_name}} 
+              <span>@{{member}}</span><span>♥</span>  
             </p>
           </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
-          <a href="profile.html" class="participant">
-            <div class="avatar avatar--medium">
-              <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-            </div>
-            <p>
-              Dennis Ivy
-              <span>@dennis_ivy</span>
-            </p>
-          </a>
+          {% endfor %}
         </div>
       </div>
       <!--  End -->
