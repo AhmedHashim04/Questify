@@ -35,4 +35,34 @@ To get a copy of the project up and running on your local machine, follow these 
 1. Clone the repository:
    ```bash
    git clone https://github.com/AhmedHashim04/Questify.git
-  
+   
+2. Navigate to the project directory:
+   cd project
+3. Create and activate a virtual environment:
+
+   - On Windows:
+         python -m venv env
+         env\Scripts\activate
+   - On macOS/Linux:
+         python3 -m venv env
+         source env/bin/activate
+     - Install the project dependencies:
+         pip install -r requirements.txt
+4. Apply the database migrations:
+   python manage.py migrate
+5. Create a superuser to access the admin panel (optional but recommended):
+   python manage.py createsuperuser
+
+6. Run the development server:
+   python manage.py runserver
+7. Open your browser and navigate to:
+   http://127.0.0.1:8000/
+
+
+you should now be able to see the Questify platform running locally.
+
+Usage
+Admin Panel: If you created a superuser, you can access the Django admin panel at http://127.0.0.1:8000/admin/ to manage users, groups, questions, and more.
+Profile Page: Users can view their profiles to see their questions, answers, and manage their accounts.
+
+
