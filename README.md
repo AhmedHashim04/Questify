@@ -26,9 +26,16 @@ To get a copy of the project up and running on your local machine, follow these 
 
 ### Prerequisites
 
-- Python 3.x
-- Django 4.x
+- Python 3.12
+- Django 5.0.6
 - Git
+
+
+### Demo Vedio
+
+   -
+   https://share.nmblc.cloud/230daf1a
+   -
 
 ### Installation
 
