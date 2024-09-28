@@ -99,9 +99,11 @@ def ask(request):
             myform = form.save(commit=False)
             myform.user = request.user
             myform.save()
+            form.save_m2m()
             messages.success(request, 'Question submitted successfully!')
 
             return redirect(reverse('ask:question_list'))
+        messages.success(request, 'make space between tags! or make it null')
     else:
         form = AskForm()
 

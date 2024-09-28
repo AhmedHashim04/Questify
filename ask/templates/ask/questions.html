@@ -2,13 +2,13 @@
 {% block body %}
 
 <main class="layout layout--3">
-  <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+<div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
 
 
 
     <!-- Groups Start -->
-    <div class="container" style="width: 100%; border: 2px solid rgb(94, 94, 94); border-radius: 40px; padding: 20px; background-color: var(--color-dark-medium); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-          <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background-color: var(--color-dark);:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+    <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background-color: var(--color-dark);:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="container1  " style="width: 100%; border: 2px solid rgb(94, 94, 94); border-radius: 40px; padding: 20px; background-color: var(--color-dark-medium); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
             <a style="padding: 10px 20px; background-color: #ff6b6b; color: var(--color-dark); border-radius: 10px; text-decoration: none; margin-bottom: 20px;" href='{% url "group:group_list" %}' class="roomListRoom__author" style="text-decoration: none; color: var(--color-dark-light);">
               <h2>Quistify Groups </h2></a>
             <div class="activities" style="text-align: center; margin-bottom: 20px;">
@@ -111,7 +111,7 @@
           <a href="{% url 'ask:question_list_by_tag' tag.slug %}">
             <p class="roomListRoom__topic">{{tag.name}}</p>
           </a>
-          {% endfor %}         
+          {% endfor %}
          </div>
         </div>
         {% else %}
@@ -134,7 +134,7 @@
     <!-- Question List End -->
 
 <!-- Friends Start -->
-<div class="container" style=" width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark-medium); color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+<div class="container1" style=" width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark-medium); color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
   
   <div class="activities-content">
     <div class="toggle-button" id="toggleButton"><span class="arrow">▼</span><h2 >My Friends</h2></div>

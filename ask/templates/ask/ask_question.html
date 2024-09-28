@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block body %}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <main class="create-room layout">
   <div class="container">
@@ -31,7 +33,8 @@
             {{form.content}}
           </div>
           <div class="form__group">
-            <label for="room_name">Tag:</label>
+            <label for="room_name">Tags : Separate by space between tags</label>
+
             {{form.tags}}
           </div>
 

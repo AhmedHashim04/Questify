@@ -34,7 +34,7 @@ def profile(request,slug):
     profile   = get_object_or_404(Profile,slug=slug)
     friends   = profile.confirmed_friend.all()    
 
-    myposts   = Question.objects.filter(user=profile.user).all()[0:3]
+    myposts   = Question.objects.filter(user=profile.user,group=None).all()[0:3]
     myanswers = Answer.objects.filter(user=profile.user).all()
     
     if request.user in profile.waiting_friend.all() and request.user not in profile.confirmed_friend.all() :

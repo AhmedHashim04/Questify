@@ -1,9 +1,8 @@
 
-  {% extends "base.html" %}
- 
+{% extends "base.html" %}
+  
   {% block body %}
 
-  
   
   {% if user.is_authenticated %}
 
@@ -35,25 +34,19 @@
         <div class="layout__body">
           <h2 class="auth__tagline">Find your study partner</h2>
           
-  {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
 
   {% if next %}
     {% if user.is_authenticated %}
       <p>Your account doesn't have access to this page. To proceed,
       please login with an account that has access.</p>
-    {% else %}
-      <p>Please login to see this page.</p>
     {% endif %}
   {% endif %}
 
   <form method="post" class="form" action="{% url 'accounts:login' %}">
-    <div class="form__group form__group">
+    <div style="color:var(--color-gray);" class="form__group form__group">
 
     {% csrf_token %}
     {{form}}
-    {% comment %} <input type="submit" value="login" class="btn btn--main" > {% endcomment %}
       <br>   
     <button class="btn btn--main" type="submit">
       <svg

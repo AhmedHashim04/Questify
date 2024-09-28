@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block body %}
+{% load static %}
   <main class="profile-page layout layout--3">
     <div class="container" style=" width: 100%;  border: 2px solid rgb(222, 101, 101);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
       <!-- Topics Start -->
@@ -46,12 +47,13 @@
           <div class="container" style="  text-align: center; width: 100%;  border: 2px solid rgb(222, 101, 101);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
             <h1 style="font-size: x-large;   text-align: center;  ">{{group.name}}</h1>
             <a style="font-size: small; text-align: center;" href="{% url 'accounts:profile' group.leader.username %}">@{{group.leader}}</a>
-            <!-- <div class="container" style=" width: 100%;  border: 2px solid rgb(222, 101, 101);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"> -->
-
+            <br>
+            <br>
             {% if request.user == group.leader %}
             <a href='{% url "group:edit_group" group.id %}' class="btn btn--main btn--pill">Edit Group</a>
-          
+            
             {% endif %} 
+            <br>
 
             <h3>About</h3>
             <p>
@@ -82,8 +84,12 @@
           <div class="roomListRoom__header">
             <a href='{% url "ask:question_detail" question.id %}' class="roomListRoom__author">
               <div class="avatar avatar--small active">
-                <img src="https://randomuser.me/api/portraits/men/11.jpg" />
-              </div>
+                {% if profile.image %}
+                <img src="{{question.user.image.url}}" />
+                  {% else %}
+                  <img src="{% static 'assets/avatar.svg' %}" alt="User Avatar" />
+                  {% endif %}
+                              </div>
               <span>@{{question.user.username}}</span>
             </a>
             <div class="roomListRoom__actions">
@@ -93,7 +99,7 @@
           </div>
           <div class="roomListRoom__content">
             <a href='{% url "ask:question_detail" question.id %}'>{{question.title}}</a>
-            <p>
+            <p style="color:var(--color-gray);">
             {{question.content}}
             </p>
           </div>
@@ -128,12 +134,13 @@
       <!-- Activities Start -->
       <div class="activities">
           
-        <div class="activities__box">
+        <div style="background:var(--color-dark-medium)" class="activities__box">
+          
+          
           
           {% if request.user == group.leader %}
-             
-            
-          <div class="activities__boxHeader roomListRoom__header">
+
+          <div  class="activities__boxHeader roomListRoom__header">
 
               <a href='{% url "group:delete_group" group.id %}'>
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
@@ -143,7 +150,7 @@
                   </path>
                 </svg>
               </a>  
-
+<br>
               <a href='{% url "group:edit_group" group.id %}'>
                 <svg
                   enable-background="new 0 0 24 24"
@@ -170,18 +177,28 @@
                   </g>
                 </svg>
               </a>   
-            <div class="roomListRoom__actions">
-            </div>
-          </div>
-          {% endif %}
 
-        <div class="layout__body">
+            </div>
+
+            {% else %}
+            
+            <a href='{% url "group:delete_group" group.id %}'>
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                <title>leave group</title>
+                <path
+                  d="M30 4h-8v-3c0-0.553-0.447-1-1-1h-10c-0.553 0-1 0.447-1 1v3h-8v2h2v24c0 1.104 0.897 2 2 2h20c1.103 0 2-0.896 2-2v-24h2v-2h-0zM12 2h8v2h-8v-2zM26.002 30l-0.002 1v-1h-20v-24h20v24h0.002z">
+                </path>
+              </svg>
+            </a>  
+            {% endif %}
+
+        <div  class="layout__body">
+          <h1 style=" width: 100%;  border: 2px solid var(--color-main);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+            Ask in Group :</h1>
           <br>
-          <h1> Ask in Group :</h1>
-          <br>
-          <form class="form" action="" method="POST">
+          <form  class="form" action="" method="POST">
             {% csrf_token %}
-            <div class="form__group">
+            <div class="form__group" >
               <label for="room_name">Title</label>
               {{form.title}}
             </div>
@@ -201,5 +218,17 @@
       <!-- Activities End -->
     </div>
   </main>
-
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const messages = document.querySelectorAll('.messages li');
+    messages.forEach(message => {
+        setTimeout(() => {
+            message.style.opacity = '0'; 
+            setTimeout(() => {
+                message.remove(); 
+            }, 200); 
+        }, 2000); 
+    });
+});
+</script>
   {% endblock body %}

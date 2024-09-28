@@ -109,6 +109,8 @@ def group_detail(request,id):
                 return render(request, 'group/group_detail.html', {'group': group,'questions': question,'form': form})
 
         else:
+                messages.info(request, 'join to group to see questions!')
+
                 return redirect(reverse('group:group_list'))
 
     else :
@@ -120,6 +122,8 @@ def group_detail(request,id):
             return render(request, 'group/group_detail.html', {'group': group,'questions': question,'form': form})
 
         else:
+                messages.info(request, 'You don,t in this group to see questions!')
+
                 return redirect(reverse('group:group_list'))
     
 
@@ -128,7 +132,12 @@ def delete_group(request, id):
     group = get_object_or_404(Group, id=id)
     if request.user == group.leader :
         group.delete()
-        messages.info(request, 'You have deleted the group!')
+        messages.info(request, 'You have delete the group!')
+        return redirect('group:group_list')
+    else:
+        group.members.remove(request.user)
+
+        messages.info(request, 'You have leave the group!')
         return redirect('group:group_list')
 
     return redirect('group:group_detail', id=group.id)

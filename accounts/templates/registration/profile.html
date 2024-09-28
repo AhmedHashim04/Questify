@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
 {% block body %}
+{% load static %}
+
   <main class="profile-page layout layout--3">
     <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
 
-    <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+    <div class="container1" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
       <!-- Answers Start -->
       
-      <div class="container main-container">
+      <div class="container1 main-container">
 
         <div class="activities__header">
             <h2> Last 3 Answers</h2>
@@ -45,7 +47,7 @@
               {% if profile.image %}
               <img src="{{profile.image.url}}" />
                 {% else %}
-                <img src="static/assets/avatar.svg" />
+                <img src="{% static 'assets/avatar.svg' %}" alt="User Avatar" />
                 {% endif %}
               
             </div>
@@ -59,10 +61,7 @@
 
                   {% if friending_status == 'not_sended' %}
                   <a href='{% url "friend:add_friend" profile.slug %}' class="btn btn--main btn--pill">Add Friend</a>
-                  {% comment %} <a href='{% url "friend:add_friend" %}' class="btn btn--main btn--pill">Add Friend</a> {% endcomment %}
-
                   {% elif friending_status == "waiting" %}
-                  {% comment %} <a href='{% url "friend:add_friend" friend_slug %}' class="btn btn--main btn--pill">Cancel Request</a> {% endcomment %}
                   <a href='{% url "friend:add_friend" profile.slug %}' class="btn btn--main btn--pill">Cancel Request</a>
                   
                   {% elif friending_status == "confirmed" %}
@@ -79,7 +78,7 @@
             </div>
             <br>
 
-            <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="container1" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
               <h3>About</h3>
             <p>
               {% if profile.bio %}
@@ -103,7 +102,7 @@
         </div>
 
 
-        <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+        <div class="container1" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
 
         {% for question in questions  %}
           
@@ -112,21 +111,22 @@
           <div class="roomListRoom__header">
             <a href='{% url "ask:question_detail" question.id %}' class="roomListRoom__author">
               <div class="avatar avatar--small active">
-                <img src="https://randomuser.me/api/portraits/men/11.jpg" />
+                <img src="{% static 'assets/avatar.svg' %}" alt="User Avatar" />
               </div>
               <span>@{{question.user.username}}</span>
             </a>
             <div class="roomListRoom__actions">
-              <span>{{question.created_at|timesince}}</span>
+              <span style="color:var(--color-dark-light)" >{{question.created_at|timesince}}</span>
 
             </div>
           </div>
           <div class="roomListRoom__content">
             <a href='{% url "ask:question_detail" question.id %}'>{{question.title}}</a>
-            <p>
+            <p style="color:var(--color-gray)">
             {{question.content}}
             </p>
           </div>
+
           <div class="roomListRoom__meta">
 
             
@@ -147,7 +147,11 @@
                 
               {% endif %}
           
-
+          {% for tag in question.tags.all %}
+          <a href="{% url 'ask:question_list_by_tag' tag.slug %}">
+            <p class="roomListRoom__topic">{{tag.name}}</p>
+          </a>
+          {% endfor %}
           </div>
         </div>
         {% endfor %}
@@ -158,8 +162,8 @@
       <!-- Info List End -->
 
       <!-- Friend & Groups Start -->
-      <div class="container" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-      <div class="container" style=" width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark-medium); color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+      <div class="container1" style=" width: 100%;  border: 2px solid rgb(94, 94, 94);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351); color: var(--color-dark); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+      <div class="container1" style=" width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: var(--color-dark-medium); color: var(--color-main); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
 
           <div class="activities-content">
             <div class="toggle-button" id="toggleButton2"><span class="arrow2">▼</span><h2 >Friends</h2></div>

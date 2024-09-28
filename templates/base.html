@@ -8,228 +8,158 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-
+    /* يمكن إضافة CSS مخصص هنا */
   </style>
   <link rel="shortcut icon" href="{% static 'assets/favicon.ico' %}" type="image/x-icon" />
-  <style>
-    /* تحسين شكل الزر */
-    #toggleButton3 {
-        background: rgba(222, 101, 101, 0.1); /* لون الخلفية */
-        border: 2px solid rgb(222, 101, 101); /* لون الحافة */
-        cursor: pointer;
-        font-size: 1.2em;
-        padding: 10px 20px; /* مسافات داخلية */
-        border-radius: 10px; /* الحواف المستديرة */
-        display: flex; /* لتصفيف النص بجانب السهم */
-        align-items: center; /* محاذاة العناصر عموديًا */
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    #toggleButton3:hover {
-        background-color: rgba(222, 101, 101, 0.2); /* تأثير عند تمرير الماوس */
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* ظل صغير */
-    }
-
-    #toggleButton3 span {
-        flex-grow: 1; /* السماح للنص بأخذ المساحة المتاحة */
-        color: var(--color-main); /* لون النص */
-        font-weight: bold; /* جعل النص عريض */
-    }
-
-    #toggleIcon {
-        font-size: 1.5em;
-        transition: transform 0.3s ease; /* تأثير دوران السهم */
-    }
-
-    #toggleButton3.active #toggleIcon {
-        transform: rotate(180deg); /* تدوير السهم عند النقر */
-    }
-
-    /* تحسين شكل المحتوى القابل للإخفاء */
-    #toggleDiv {
-        width: 100%;
-        border: 2px solid rgb(222, 101, 101);
-        border-radius: 40px;
-        padding: 20px;
-        background: rgba(137, 142, 137, 0.35);
-        color: var(--color-dark-light);
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-        display: none; /* إخفاء المحتوى في البداية */
-    }
-</style>
   <link rel="stylesheet" href="{% static 'styles/style.css' %}" />  
-
   <title>Questify - Find Answers to your Questions!</title>
 </head>
 
 <body>
   <header class="header header--loggedIn">
-    <div class="container" style=" width: 100%;  border: 2px solid rgb(222, 101, 101);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+    <div class="container" style="width: 70%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: rgba(137, 142, 137, 0.35); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
       <a href="/" class="header__logo">
-        
-        <img src="{% static 'assets/logo.svg' %}" />
+        <img src="{% static 'assets/logo.svg' %}" alt="Questify Logo" />
         <h1>Questify</h1>
       </a>
-      {% if request.user.is_authenticated  %}
-      <div class="container" style="width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: rgba(137, 142, 137, 0.35); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; text-align: center;">
+
+      {% if request.user.is_authenticated %}
+      <div class="container1" style="width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: rgba(137, 142, 137, 0.35); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; text-align: center;">
         <button id="toggleButton3" style="background: rgba(222, 101, 101, 0.1); border: 2px solid rgb(222, 101, 101); cursor: pointer; font-size: 1.2em; padding: 10px 20px; border-radius: 10px; display: inline-flex; align-items: center; transition: background-color 0.3s ease, box-shadow 0.3s ease;">
           <span style="flex-grow: 1; color: var(--color-main); font-weight: bold;">Search By Data or Title or Description</span>
           <i id="toggleIcon" style="font-size: 1em; transition: transform 0.3s ease;">&#9660;</i> <!-- سهم متغير -->
         </button>
     
-    <div id="toggleDiv" class="container" style="display: none; width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: rgba(137, 142, 137, 0.35); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease;">
-      <br>
+        <div id="toggleDiv" class="container1" style="display: none; width: 100%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: rgba(137, 142, 137, 0.35); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease;">
+          <br>
   
-      <form class="header__search" action="{% url 'ask:question_list' %}" method="POST" onsubmit="return validateForm()">
+          <form class="header__search" action="{% url 'ask:question_list' %}" method="POST" onsubmit="return validateForm()">
             {% csrf_token %}
             <div class="search-container">
-                <input type="text" id="search" name="search_txt" placeholder="Search for questions... in title or description" class="search-input" style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 10px; border: 1px solid rgb(222, 101, 101); transition: box-shadow 0.3s ease, background-color 0.3s ease;">
-                <div class="date-range" style="margin-top: 20px;">
-                    <label for="from" style="color: var(--color-main); margin-right: 10px;">From</label>
-                    <input type="date" name="from" id="from" class="date-input" style="width: 100%; padding: 5px; margin: 10px 0; border-radius: 5px; border: 1px solid rgb(222, 101, 101);">
-                </div>
-                <hr style="border: none; border-top: 1px solid rgba(222, 101, 101, 0.3); margin: 20px 0;">
-                <div class="date-range" style="margin-top: 20px;">
-                    <label for="to" style="color: var(--color-main); margin-right: 10px;">To</label>
-                    <input type="date" name="to" id="to" class="date-input" style="width: 100%; padding: 5px; margin: 10px 0; border-radius: 5px; border: 1px solid rgb(222, 101, 101);">
-                </div>
+              <input type="text" id="search" name="search_txt" placeholder="Search for questions... in title or description" class="search-input" style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 10px; border: 1px solid rgb(222, 101, 101); transition: box-shadow 0.3s ease, background-color 0.3s ease;">
+              <div class="date-range" style="margin-top: 20px;">
+                <label for="from" style="color: var(--color-main); margin-right: 10px;">From</label>
+                <input type="date" name="from" id="from" class="date-input" style="width: 100%; padding: 5px; margin: 10px 0; border-radius: 5px; border: 1px solid rgb(222, 101, 101);">
+              </div>
+              <hr style="border: none; border-top: 1px solid rgba(222, 101, 101, 0.3); margin: 20px 0;">
+              <div class="date-range" style="margin-top: 20px;">
+                <label for="to" style="color: var(--color-main); margin-right: 10px;">To</label>
+                <input type="date" name="to" id="to" class="date-input" style="width: 100%; padding: 5px; margin: 10px 0; border-radius: 5px; border: 1px solid rgb(222, 101, 101);">
+              </div>
             </div>
-        </form>
+          </form>
         
+        </div>
       </div>
-      </div>
-    {% endif %}    
+      {% endif %}    
 
       <nav class="header__menu">
-      {% if request.user.is_authenticated  %}
-
-
+        {% if request.user.is_authenticated %}
         <div class="header__user">
           <a href="{% url 'accounts:profile' request.user.username %}">
             <div class="avatar avatar--medium active">
-              <img src="static/assets/avatar.svg" />
+              <img src="{% static 'assets/avatar.svg' %}" alt="User Avatar" />
             </div>
-            <p>{{request.user.first_name}} <span>@{{request.user.username}}</span></p>
+            <p>{{ request.user.first_name }} <span>@{{ request.user.username }}</span></p>
           </a>
 
           <div class="notification-container">
             <a href="/notification/">🔔
-            {% if notification_count > 0 %}
-              <span style="color: ff6b6b;">{{notification_count}}</span>
+              {% if notification_count > 0 %}
+              <span style="color: ff6b6b;">{{ notification_count }}</span>
               {% else %}
               <span style="color: ff6b6b;">0</span>
               {% endif %}
             </a>
           </div>
-
-          
         </div>
+        <div class="container" style="width: 40%; border: 2px solid rgb(222, 101, 101); border-radius: 5px;  ; margin:10%;background: rgba(137, 142, 137, 0.35); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+
+        <a href="{% url 'accounts:logout' %}">
+          <p>Logout</p>
+        </a>
+      </div>
 
         {% else %}
-                <!-- Not Logged In -->
-                <a href="/accounts/login/">
-          
-                  <img src="{% static './assets/avatar.svg' %}" />
-                  <p>Account</p>
-                </a>
-              </nav>
-
-   
-        
+        <!-- Not Logged In -->
+        <a href="{% url 'accounts:login' %}">
+          <img src="{% static 'assets/avatar.svg' %}" alt="Default Avatar" />
+          <p>Account</p>
+        </a>
         {% endif %}
-        <div class="dropdown-menu">
-          <a st href="{% url 'accounts:profile' request.user.id %}" class="dropdown-link"
-            ><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-              <title>tools</title>
-              <path
-                d="M27.465 32c-1.211 0-2.35-0.471-3.207-1.328l-9.392-9.391c-2.369 0.898-4.898 0.951-7.355 0.15-3.274-1.074-5.869-3.67-6.943-6.942-0.879-2.682-0.734-5.45 0.419-8.004 0.135-0.299 0.408-0.512 0.731-0.572 0.32-0.051 0.654 0.045 0.887 0.277l5.394 5.395 3.586-3.586-5.394-5.395c-0.232-0.232-0.336-0.564-0.276-0.887s0.272-0.596 0.572-0.732c2.552-1.152 5.318-1.295 8.001-0.418 3.274 1.074 5.869 3.67 6.943 6.942 0.806 2.457 0.752 4.987-0.15 7.358l9.392 9.391c0.844 0.842 1.328 2.012 1.328 3.207-0 2.5-2.034 4.535-4.535 4.535zM15.101 19.102c0.26 0 0.516 0.102 0.707 0.293l9.864 9.863c0.479 0.479 1.116 0.742 1.793 0.742 1.398 0 2.535-1.137 2.535-2.535 0-0.668-0.27-1.322-0.742-1.793l-9.864-9.863c-0.294-0.295-0.376-0.74-0.204-1.119 0.943-2.090 1.061-4.357 0.341-6.555-0.863-2.631-3.034-4.801-5.665-5.666-1.713-0.561-3.468-0.609-5.145-0.164l4.986 4.988c0.391 0.391 0.391 1.023 0 1.414l-5 5c-0.188 0.188-0.441 0.293-0.707 0.293s-0.52-0.105-0.707-0.293l-4.987-4.988c-0.45 1.682-0.397 3.436 0.164 5.146 0.863 2.631 3.034 4.801 5.665 5.666 2.2 0.721 4.466 0.604 6.555-0.342 0.132-0.059 0.271-0.088 0.411-0.088z"
-              ></path>
-            </svg>
-            Settings</a
-          >
-          <a href="/accounts/login" class="dropdown-link"
-            ><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-              <title>sign-out</title>
-              <path
-                d="M3 0h22c0.553 0 1 0 1 0.553l-0 3.447h-2v-2h-20v28h20v-2h2l0 3.447c0 0.553-0.447 0.553-1 0.553h-22c-0.553 0-1-0.447-1-1v-30c0-0.553 0.447-1 1-1z"
-              ></path>
-              <path
-                d="M21.879 21.293l1.414 1.414 6.707-6.707-6.707-6.707-1.414 1.414 4.293 4.293h-14.172v2h14.172l-4.293 4.293z"
-              ></path>
-            </svg>
-            Logout</a
-          >
-        </div>
       </nav>
     </div>
   </header>
+
+
+</body>
+<div class="container" style="width: 80%; border: 2px solid rgb(222, 101, 101); border-radius: 40px; padding: 20px; background: rgba(137, 142, 137, 0.35); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+  {% if messages %}
+
+  <ul class="messages" style="    position: fixed; bottom: 20px;  right: 20px;  list-style: none; padding: 0; margin: 0; z-index: 1000; ">
+      {% for message in messages %}
+      <li class="alert alert-{{ message.tags }}" style="width: 300px; border: 2px solid rgb(94, 94, 94); border-radius: 40px; padding: 20px; background: var(--color-dark-light); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 10px;  opacity: 1; transition: opacity 0.5s ease-out; ">
+          <span style="color:var(--color-main);" >{{ message }}</span>
+          <button class="close-btn" onclick="this.parentElement.style.display='none';">&times;</button>
+      </li>
+      {% endfor %}
+  </ul>
+{% endif %}
+{% block body %}
+
+
+{% endblock body %}
+</div>
   <script>
     function validateForm() {
-        var search = document.getElementById('search').value;
-        if (search == "") {
-            alert("Please enter a search term.");
-            return false;
-        }
-        return true;
+      var search = document.getElementById('search').value;
+      if (search === "") {
+        alert("Please enter a search term.");
+        return false;
+      }
+      return true;
     }
 
     function closeMessage(element) {
       element.parentElement.style.display = 'none';
-  }
+    }
 
-    // Optional: Add hover effects with JavaScript for the container
-    document.querySelector('.container').addEventListener('mouseover', function() {
+    document.querySelectorAll('.container1').forEach(function(container) {
+      container.addEventListener('mouseover', function() {
         this.style.transform = 'scale(1.02)';
         this.style.boxShadow = '0px 8px 16px rgba(0, 0, 0, 0.2)';
-    });
-
-    document.querySelector('.container').addEventListener('mouseout', function() {
+      });
+      container.addEventListener('mouseout', function() {
         this.style.transform = 'scale(1)';
         this.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.1)';
+      });
     });
 
     document.getElementById("toggleButton3").addEventListener("click", function() {
       var div = document.getElementById("toggleDiv");
       var icon = document.getElementById("toggleIcon");
-      if (div.style.display === "none" || div.style.display === "") {
+      if (div.style.display === "none") {
         div.style.display = "block";
-        icon.style.transform = "rotate(180deg)"; // تدوير السهم ليدل على الإغلاق
-    } else {
+        icon.innerHTML = "&#9650;";
+      } else {
         div.style.display = "none";
-        icon.style.transform = "rotate(0deg)"; // إعادة السهم لوضعه الطبيعي
-    }
-      
-  });
-  document.addEventListener('DOMContentLoaded', function() {
-    const messages = document.querySelectorAll('.messages li');
-    messages.forEach(message => {
-        setTimeout(() => {
-            message.style.opacity = '0'; 
-            setTimeout(() => {
-                message.remove(); 
-            }, 200); 
-        }, 2000); 
+        icon.innerHTML = "&#9660;";
+      }
     });
-});
-</script>
-  <div class="container" style=" width: 100%;  border: 2px solid rgb(237, 104, 104);  border-radius: 40px; padding: 20px; background:rgba(137, 142, 137, 0.351);; color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-          {% if messages %}
+    document.addEventListener('DOMContentLoaded', function() {
+      const messages = document.querySelectorAll('.messages li');
+      messages.forEach(message => {
+          setTimeout(() => {
+              message.style.opacity = '0'; 
+              setTimeout(() => {
+                  message.remove(); 
+              }, 200); 
+          }, 2000); 
+      });
+  });
+  </script>
+</html>
 
-              <ul class="messages" style="    position: fixed; bottom: 20px;  right: 20px;  list-style: none; padding: 0; margin: 0; z-index: 1000; ">
-                  {% for message in messages %}
-                  <li class="alert alert-{{ message.tags }}" style="width: 300px; border: 2px solid rgb(94, 94, 94); border-radius: 40px; padding: 20px; background: var(--color-dark-light); color: var(--color-dark-light); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 10px;  opacity: 1; transition: opacity 0.5s ease-out; ">
-                      <span style="color:var(--color-main);" >{{ message }}</span>
-                      {% comment %} <button class="close-btn" onclick="this.parentElement.style.display='none';">&times;</button> {% endcomment %}
-                  </li>
-                  {% endfor %}
-              </ul>
-          {% endif %}
-  {% block body %}
-
-
-  {% endblock body %}
-</div>
 
 
 

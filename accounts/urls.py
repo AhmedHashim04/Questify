@@ -6,8 +6,8 @@ app_name ="accounts"
 urlpatterns = [
     path('signup/',views.signup,name='signup'),
     path('profile/<slug:slug>',views.profile,name='profile'),
-
     path('profile/edit/<slug:slug>',views.editprofile,name='profile_edit'),
+    
     path("login/", views2.LoginView.as_view(), name="login"),
     path("logout/", views2.LogoutView.as_view(), name="logout"),
     path("password_change/", views2.PasswordChangeView.as_view(), name="password_change"),

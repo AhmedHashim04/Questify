@@ -5,7 +5,7 @@ from group.models import Group
 from taggit.managers import TaggableManager
 # Create your models here.
 class Question(models.Model):
-    title            = models.CharField(max_length=1000 , unique=True )
+    title            = models.CharField(max_length=1000  )
     content          = models.TextField(max_length=40000, blank=True  )
     rating           = models.IntegerField(null=True, blank=True)
     created_at       = models.DateTimeField(auto_now=True,auto_created=True,null=True, blank=True,)

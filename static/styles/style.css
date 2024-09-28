@@ -64,8 +64,8 @@ a {
 
 /*========== components ==========*/
 .container {
-  max-width: 120rem;
-  width: 90%;
+  max-width: 1200rem;
+  width: 100%;
   margin: 0 auto;
   padding: 0rem 1rem;
 }
@@ -1552,3 +1552,49 @@ mbody {
   color: var(--color-dark);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+    /* تحسين شكل الزر */
+    #toggleButton3 {
+      background: rgba(222, 101, 101, 0.1); /* لون الخلفية */
+      border: 2px solid rgb(222, 101, 101); /* لون الحافة */
+      cursor: pointer;
+      font-size: 1.2em;
+      padding: 10px 20px; /* مسافات داخلية */
+      border-radius: 10px; /* الحواف المستديرة */
+      display: flex; /* لتصفيف النص بجانب السهم */
+      align-items: center; /* محاذاة العناصر عموديًا */
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #toggleButton3:hover {
+      background-color: rgba(222, 101, 101, 0.2); /* تأثير عند تمرير الماوس */
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* ظل صغير */
+  }
+
+  #toggleButton3 span {
+      flex-grow: 1; /* السماح للنص بأخذ المساحة المتاحة */
+      color: var(--color-main); /* لون النص */
+      font-weight: bold; /* جعل النص عريض */
+  }
+
+  #toggleIcon {
+      font-size: 1.5em;
+      transition: transform 0.3s ease; /* تأثير دوران السهم */
+  }
+
+  #toggleButton3.active #toggleIcon {
+      transform: rotate(180deg); /* تدوير السهم عند النقر */
+  }
+
+  /* تحسين شكل المحتوى القابل للإخفاء */
+  #toggleDiv {
+      width: 100%;
+      border: 2px solid rgb(222, 101, 101);
+      border-radius: 40px;
+      padding: 20px;
+      background: rgba(137, 142, 137, 0.35);
+      color: var(--color-dark-light);
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      display: none; /* إخفاء المحتوى في البداية */
+  }
