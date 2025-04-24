@@ -15,10 +15,9 @@
 
 ## Technologies Used
 
-- **Backend**: Django (Function-Based Views)
+- **Backend**: Python, Django (Function-Based Views)
 - **Frontend**: HTML, CSS, Bootstrap
-- **Database**: SQLite (or any database supported by Django)
-- **Version Control**: Git & GitHub
+- **Database**: MySQL
 
 ## Getting Started
 
